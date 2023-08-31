@@ -2,7 +2,7 @@ import mysql.connector
 
 
 class TaipeiAttraction(object):
-    def __init__(self, host = 'localhost', user = 'root', password = 'root'):
+    def __init__(self, host, user, password):
         self.__host = host
         self.__user = user
         self.__password = password
