@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/usr/local/lib/python3.10/dist-packages')
+
 from flask import Flask
 from flask import render_template
 from taipeiAttraction import TaipeiAttraction
