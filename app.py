@@ -35,4 +35,4 @@ def attractionApi(attractionId):
 	result = db_connect.queryAttractionId(attractionId)
 	return result
 
-app.run(port='3000')
+app.run(host='34.214.175.62', port='3000')
