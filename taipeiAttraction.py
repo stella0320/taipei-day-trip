@@ -123,3 +123,84 @@ class TaipeiAttraction(object):
                     'lng': result['lng']
                 }
             }
+        
+    def countAttractionApi(self, keyword):
+        if not keyword:
+            sql = 'select count(*) count from taipei_attraction.attraction'
+        else:
+            sql = 'select count(*) count from taipei_attraction.attraction a '
+            sql += 'left join taipei_attraction.mrt b '
+            sql += 'on a.mrt_id = b.mrt_id '
+            sql += 'where a.attraction_name like %s or b.mrt_name = %s '
+
+        self.__open__()
+
+        if not keyword:
+            self.__cursor.execute(sql)
+        else:
+            self.__cursor.execute(sql, ('%' + keyword + '%',keyword, ))
+        result = self.__cursor.fetchone()
+        self.__close__()
+
+        return list(result)[0]
+    
+    def queryAttractionPageDataApi(self, page, keyword):
+        sql = 'select c.*, d.* from ( '
+        sql += 'select b.mrt_name, a.* from taipei_attraction.attraction a '
+        sql += 'left join taipei_attraction.mrt b '
+        sql += 'on a.mrt_id = b.mrt_id '
+        sql += 'where a.attraction_name like %s or b.mrt_name = %s '
+        sql += 'order by attraction_id '
+        sql += 'LIMIT %s,%s) c '
+        sql += 'left join taipei_attraction.attraction_category d '
+        sql += 'on c.category_id = d.category_id '
+
+        self.__open__()
+        self.__cursor.execute(sql, ('%' + keyword + '%',keyword, (page -1) * 12, 12, ))
+
+        result = self.__cursor.fetchall()
+        self.__close__()
+
+        dataList = []
+
+        if result and len(result) > 0:
+            results = [dict(zip(self.__cursor.column_names, row)) for row in result]
+            for result in results:
+                data = {
+                    'id': result['attraction_id'],
+                    'name': result['attraction_name'],
+                    'category': result['category_name'],
+                    'description': result['description'],
+                    'address': result['address'],
+                    'transport': result['transport'],
+                    'mrt': result['mrt_name'],
+                    'lat': result['lat'],
+                    'lng': result['lng']
+                }
+                dataList.append(data)
+        
+        return dataList
+
+    def queryAttractionApi(self, page, keyword):
+        # page必填 給exception
+        totalCount = self.countAttractionApi(keyword)
+
+        # (page-1) * 12 + 1 ~ page * 12
+        if totalCount > page * 12:
+            nextPage = page + 1
+        else:
+            nextPage = None
+
+        data = self.queryAttractionPageDataApi(page, keyword)
+        result = {
+            "nextPage": nextPage,
+            "data": data
+        }
+
+        return result
+        
+        
+
+
+
+
