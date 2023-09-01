@@ -185,8 +185,8 @@ class TaipeiAttraction(object):
         # page必填 給exception
         totalCount = self.countAttractionApi(keyword)
 
-        # (page-1) * 12 + 1 ~ page * 12
-        if totalCount > page * 12:
+        # page * 12 ~ (page + 1) * 12
+        if totalCount > (page + 1) * 12:
             nextPage = page + 1
         else:
             nextPage = None
