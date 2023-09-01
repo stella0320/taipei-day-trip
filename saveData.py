@@ -6,7 +6,7 @@ with open('data/taipei-attractions.json', encoding='utf-8') as file:
 
 
 
-db_connect = TaipeiAttraction('ec2-34-214-175-62.us-west-2.compute.amazonaws.com', 'root', 'jessie0320')
+db_connect = TaipeiAttraction('172.31.16.240', 'root', 'jessie0320')
 
 for data in dataSet:
     
