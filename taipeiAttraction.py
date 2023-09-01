@@ -156,7 +156,7 @@ class TaipeiAttraction(object):
         sql += 'on c.category_id = d.category_id '
 
         self.__open__()
-        self.__cursor.execute(sql, ('%' + keyword + '%',keyword, (page -1) * 12, 12, ))
+        self.__cursor.execute(sql, ('%' + keyword + '%',keyword, page * 12, 12, ))
 
         result = self.__cursor.fetchall()
         self.__close__()
