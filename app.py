@@ -25,13 +25,13 @@ def thankyou():
 
 @app.route("/api/mrts", methods = ['GET'])
 def mrts():
-	db_connect = TaipeiAttraction('localhost', 'root', 'root')
+	db_connect = TaipeiAttraction('localhost', 'root', 'jessie0320')
 	result = db_connect.findAllMrt()
 	return result
 
 @app.route("/api/attraction/<attractionId>", methods = ['GET'])
 def attractionApi(attractionId):
-	db_connect = TaipeiAttraction('localhost', 'root', 'root')
+	db_connect = TaipeiAttraction('localhost', 'root', 'jessie0320')
 	result = db_connect.queryAttractionId(attractionId)
 	return result
 
