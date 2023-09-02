@@ -58,6 +58,7 @@ class TaipeiAttraction(object):
         
         return None
     
+    
     def insertNewCategory(self, categoryName):
 
         if not categoryName:
@@ -78,6 +79,21 @@ class TaipeiAttraction(object):
         self.__connect.commit()
         self.__close__()
 
+    def queryImageUrlListByAttractionId(self, attractionId):
+        
+        sql = "select * from taipei_attraction.attraction_image where attraction_id = %s"
+
+        self.__open__()
+        self.__cursor.execute(sql, (attractionId, ))
+        
+        result = self.__cursor.fetchall()
+        self.__close__()
+        if result and len(result) > 0:
+            result = [dict(zip(self.__cursor.column_names, row)) for row in result]
+            return [item['image_url'] for item in result]
+        
+        return None
+
     def insertNewAttraction(self, attractionName, categoryId, mrtId, attractionDescription, address, transport, lat, lng):
         insertSql = "Insert into taipei_attraction.attraction (attraction_name, category_id, mrt_id, description, address, transport, lat, lng) "
         insertSql += "values(%s, %s, %s, %s, %s, %s, %s, %s)"
@@ -86,6 +102,25 @@ class TaipeiAttraction(object):
         self.__connect.commit()
         self.__close__()
 
+    def queryAttractionByName(self, name):
+        sql = "select * from taipei_attraction.attraction where attraction_name = %s"
+
+        self.__open__()
+        self.__cursor.execute(sql, (name, ))
+        
+        result = self.__cursor.fetchone()
+        self.__close__()
+        if result and len(result) > 0:
+            return dict(zip(self.__cursor.column_names, result))
+        
+        return None
+
+    def insertNewAttractionImage(self, attraction_id, url):
+        sql = 'Insert into taipei_attraction.attraction_image (attraction_id, image_url) values (%s, %s)'
+        self.__open__()
+        self.__cursor.execute(sql, (url, ))
+        self.__connect.commit()
+        self.__close__()
 
     def findAllMrt(self):
         sql = "select a.mrt_name from taipei_attraction.mrt a "
@@ -99,7 +134,9 @@ class TaipeiAttraction(object):
         result = self.__cursor.fetchall()
         self.__close__()
 
-        return [item[0] for item in result]
+        return {
+            'data': [item[0] for item in result]
+        }
     
     def queryAttractionId(self, attractionId):
         sql = "select * from taipei_attraction.attraction a, taipei_attraction.attraction_category b, taipei_attraction.mrt c "
@@ -110,6 +147,8 @@ class TaipeiAttraction(object):
         self.__close__()
         if result and len(result) > 0:
             result = dict(zip(self.__cursor.column_names, result))
+            attraction_id = result['attraction_id']
+            imageList = self.queryImageUrlListByAttractionId(attraction_id)
             return {
                 'data' :{
                     'id': result['attraction_id'],
@@ -120,7 +159,8 @@ class TaipeiAttraction(object):
                     'transport': result['transport'],
                     'mrt': result['mrt_name'],
                     'lat': result['lat'],
-                    'lng': result['lng']
+                    'lng': result['lng'],
+                    'images': imageList
                 }
             }
         
@@ -166,6 +206,8 @@ class TaipeiAttraction(object):
         if result and len(result) > 0:
             results = [dict(zip(self.__cursor.column_names, row)) for row in result]
             for result in results:
+                attraction_id = result['attraction_id']
+                imageList = self.queryImageUrlListByAttractionId(attraction_id)
                 data = {
                     'id': result['attraction_id'],
                     'name': result['attraction_name'],
@@ -175,7 +217,8 @@ class TaipeiAttraction(object):
                     'transport': result['transport'],
                     'mrt': result['mrt_name'],
                     'lat': result['lat'],
-                    'lng': result['lng']
+                    'lng': result['lng'],
+                    'image': imageList
                 }
                 dataList.append(data)
         

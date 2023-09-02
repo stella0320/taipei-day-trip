@@ -1,5 +1,6 @@
 import json
 from taipeiAttraction import TaipeiAttraction
+import re
 
 with open('data/taipei-attractions.json', encoding='utf-8') as file:
     dataSet = json.load(file)['result']['results']
@@ -19,7 +20,6 @@ for data in dataSet:
     lat = data['latitude']
     lng = data['longitude']
     files = data['file']
-
 
     #category
 
@@ -46,22 +46,30 @@ for data in dataSet:
     else:
         mrt_id = mrt['mrt_id']
 
-    db_connect.insertNewAttraction(name, category_id, mrt_id, attraction_description, address, transport, lat, lng)
+    attraction = db_connect.queryAttractionByName(name)
+
+    if not attraction:
+        db_connect.insertNewAttraction(name, category_id, mrt_id, attraction_description, address, transport, lat, lng)
+
+    # 處理image url
+
+    if files:
+        # 使用正则表达式查找匹配的链接
+        filesList = re.findall(r"[^https://www.travel.taipei][^.]+(?:\.jpg|\.JPG)", files)
+        filesList = ['https://www.travel.taipei/' + file for file in filesList]
+
+    if attraction and filesList:
+        # insert image
+        attraction_id = int(attraction['attraction_id'])
+        for file_url in filesList:
+            db_connect.insertNewImage(attraction_id, file_url)
+
+
+        
 
 
 
-# txt = "https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpghttps://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11002891.jpghttps://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D315/E70/F65/1e0951fb-069f-4b13-b5ca-2d09df1d3d90.JPGhttps://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D260/E538/F274/e7d482ba-e3c0-40c3-87ef-3f2a1c93edfa.JPGhttps://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D919/E767/F581/9ddde70e-55c2-4cf0-bd3d-7a8450582e55.JPGhttps://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C1/D28/E891/F188/77a58890-7711-4ca2-aebe-4aa379726575.JPG"
 
-# print(len(txt))
 
-# start = 0
-# end = 5
-# urlArray = []
-# while (end + 26 < len(txt)):
-#     position = txt.index("https://www.travel.taipei/", end)
-#     position = min(len(txt), position)
-#     urlArray.append(txt[start:position])
-#     start = position
-#     end = position + 1
 
-# print(urlArray)
+
