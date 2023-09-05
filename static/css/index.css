@@ -222,11 +222,27 @@ body > p {
 
 .index-main-content-mrt {
     display: flex;
-    flex: none;
-    width: 1200px;
-    height: 30px;
+    width: 100%;
+    height: 50px;
     margin-top: 40px;
     padding-bottom: 20px;
+}
+
+.index-main-content-mrt-left {
+    display: flex;
+    flex: auto;
+    width: 32px;
+    height: 32px;
+    justify-content: flex-start;
+
+}
+
+.index-main-content-mrt-right {
+    display: flex;
+    flex: auto;
+    width: 32px;
+    height: 32px;
+    justify-content: flex-end;
 }
 
 .index-main-content-attraction-list {
@@ -371,3 +387,5 @@ body > p {
     font-weight: 700;
     line-height: 13.3px;
 }
+
+
