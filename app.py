@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 from flask import render_template
 from flask import request
 from taipeiAttraction import TaipeiAttraction
+import time
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
@@ -13,7 +14,7 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 # Pages
 @app.route("/")
 def index():
-	return render_template("index.html")
+	return render_template("index.html", time=str(time.time()))
 @app.route("/attraction/<id>")
 def attraction(id):
 	return render_template("attraction.html")
@@ -57,6 +58,6 @@ def attractionsApi():
 		return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 500
 	return result
 
-app.run(host='0.0.0.0', port='3000')
+# app.run(host='0.0.0.0', port='3000')
 
-# app.run(port='3000')
+app.run(port='3000')

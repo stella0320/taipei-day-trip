@@ -1,0 +1,372 @@
+
+body {
+    font-size: 20px;
+    margin-left:0px;
+    margin-right:0px;
+}
+
+body > p {
+    font-family: Noto Sans TC;
+    font-style: normal;
+}
+
+.headerFrame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    width: 1200px;
+}
+
+.title {
+    flex: none;
+    width: 150px;
+    height: 34px;
+
+    color: var(--primary-color-cyan-70, #489);
+    /* Header 2 - Bold 30(34) */
+    font-family: Noto Sans TC;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 34px; /* 113.333% */
+}
+
+.menu {
+    flex: auto;
+    display: flex;
+    width: 175px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu-item-reserve {
+    flex: none;
+    display: flex;
+    height: 14px;
+    width: 64px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-item-reserve-text {
+    height: 14px;
+    width: 64px;
+    color: var(--secondary-color-gray-70, #666);
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px; /* 83.125% */
+}
+
+.menu-item-login {
+    flex: none;
+    display: flex;
+    width: 71px;
+    height: 14px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-item-login-text {
+    width: 71px;
+    height: 14px;
+    color: var(--secondary-color-gray-70, #666);
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px; /* 83.125% */
+}
+
+.index-welcome-frame {
+    height: 320px;
+    width: auto;
+    align-items: center;
+}
+
+.index-welcome-image {
+    height: 320px;
+    position: relative;
+}
+
+.index-welcome-image-img {
+    display: block;
+    width: 100%;
+    height: 480px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: left top; /*可裁切*/
+}
+
+.index-welcome-image-content-items {
+    display: flex;
+    height: 169px;
+   
+}
+
+.index-welcome-image-content {
+    /* display: flex; */
+    flex: auto;
+    height: 169px;
+    width: 1180px;
+    padding: 10px;
+    position: absolute; /* 将文本绝对定位在容器内 */
+    top: 50%; /* 从顶部距离容器的中心50% */
+    left: 50%; /* 从左侧距离容器的中心50% */
+    transform: translate(-50%, -50%); /* 将文本向左上角移动50%以使其居中 */
+}
+
+.index-welcome-image-content-text1 {
+    width: 100%;
+    height: 41px;
+    display: flex;
+}
+
+.index-welcome-image-content-text1 > p {
+    color: var(--secondary-color-gray-10, #F8F8F8);
+    /* Text Shadow */
+    text-shadow: 0px 0px 30px #ABC;
+
+    /* Header 1 - Bold 28(24) */
+    font-family: Noto Sans TC;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 85.714% */
+}
+
+.index-welcome-image-content-text2 {
+    width: 100%;
+    height: 22px;
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.index-welcome-image-content-text2 > p {
+    color: var(--secondary-color-gray-10, #F8F8F8);
+
+    /* Body - Bold 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 13.3px; /* 83.125% */
+}
+
+.index-welcome-image-content-search {
+    width: 460px;
+    height: 46px;
+    display: flex;
+}
+
+.index-welcome-image-content-search-text {
+    width: 400px;
+    height: 46px;
+    flex:none
+}
+
+.index-welcome-image-content-search-text > input {
+    width: 370px;
+    height: 14px;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 13.3px; /* 83.125% */
+    padding: 15px;
+    border-radius: 5px 0px 0px 5px;
+    border-width: 0px;
+}
+
+.index-welcome-image-content-search-btn {
+    width: 60px;
+    height: 46px;
+    flex:none
+}
+
+.index-welcome-image-content-search-btn > button {
+    background-color: #448899;
+    width: 60px;
+    height: 46px;
+    border-radius: 0px 5px 5px 0px;
+    margin-top: -1px;
+    border-width: 0px;
+}
+
+.index-main-frame {
+    display: flex;
+    /* height: 806px; */
+    width: auto;
+    background-color: rgb(223, 223, 247);
+    justify-content: center;
+}
+
+.index-main-content {
+    display: flex;
+    width: 1200px;
+    background-color: aqua;
+    justify-content: center;
+}
+
+.index-main-content-mrt {
+    display: flex;
+    flex: none;
+    width: 1200px;
+    height: 30px;
+    margin-top: 40px;
+    padding-bottom: 20px;
+}
+
+.index-main-content-attraction-list {
+    width: 1200px;
+    display: flex;
+    justify-content: space-between;
+
+    @media (max-width:1920px) { 
+        flex-wrap: wrap;
+    }
+
+    @media (max-width:1200px) { 
+        width: 90%;
+    }
+
+    @media (max-width:360px) { 
+        width: 100%;
+    }
+
+}
+
+.index-main-content-attraction-item {
+    flex: auto;
+    width: 270px;
+    margin: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--secondary-color-gray-20, #E8E8E8);
+    /* 邊寬會造成item往外擴張 */
+    box-sizing: border-box;
+    background: var(--White, #FFF);
+    
+}
+
+.index-main-content-attraction-image {
+    width: auto;
+    height: 197px;
+    position: relative;
+}
+
+.index-main-content-attraction-image > img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left top; /*可裁切*/
+}
+
+.index-main-content-attraction-image-txt {
+    display: flex;
+    width: calc(100% - 20px);
+    height: 20px;
+    background-color: black;
+    opacity: 0.5;
+    position: absolute; /* 将文本绝对定位在容器内 */
+    top: 100%; /* 从顶部距离容器的中心50% */
+    left: 50%; /* 从左侧距离容器的中心50% */
+    transform: translate(-50%, -100%); /*将文本向左上角移动50%以使其居中*/
+    padding: 10px;
+    align-items: center;
+}
+
+.index-main-content-attraction-image-txt > div {
+    flex: none;
+    color: var(--additional-color-white, #FFF);
+    /* Body - Bold 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 13.3px; /* 83.125% */
+}
+
+.index-main-content-attraction-text {
+    width: calc(100% - 20px);
+    height: 25px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.index-main-content-attraction-text-mrt {
+    display: flex;
+    flex: auto;
+    align-items: center;
+}
+
+.index-main-content-attraction-text-mrt > div {
+    color: var(--secondary-color-gray-50, #757575);
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px; /* 83.125% */
+}
+.index-main-content-attraction-text-category {
+    flex: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.index-main-content-attraction-text-category > div {
+    flex: none;
+    color: var(--secondary-color-gray-50, #757575);
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.3px; /* 83.125% */
+}
+
+
+.index-foot-frame {
+    display: flex;
+    height: 104px;
+    background: var(--Gray-700, #757575);
+    justify-content: center;
+    align-items: center;
+
+}
+
+.index-foot-text {
+    display: flex;
+    flex: none;
+    width: 234px;
+    height: 24px;
+    align-items: center;
+}
+
+.index-foot-text-txt {
+    flex: none;
+    height: 14px;
+    color: var(--additional-color-white, #FFF);
+
+    /* Body - Bold 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 13.3px;
+}
