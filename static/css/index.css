@@ -108,31 +108,30 @@ body > p {
     object-position: left top; /*可裁切*/
 }
 
-.index-welcome-image-content-items {
-    display: flex;
-    height: 169px;
-   
-}
-
 .index-welcome-image-content {
-    /* display: flex; */
-    flex: auto;
-    height: 169px;
+    display: flex;
+    flex-direction: column;
     width: 1180px;
-    padding: 10px;
+    height: 20px;
     position: absolute; /* 将文本绝对定位在容器内 */
     top: 50%; /* 从顶部距离容器的中心50% */
     left: 50%; /* 从左侧距离容器的中心50% */
-    transform: translate(-50%, -50%); /* 将文本向左上角移动50%以使其居中 */
+    transform: translate(-50%, -50%); /* 将文本向左上角移动 /*将文本向左上角移动50%以使其居中*/
+    padding: 10px;
+
+    @media (max-width:1200px) {
+        width: calc(100% - 20px);
+    }
 }
 
 .index-welcome-image-content-text1 {
     width: 100%;
     height: 41px;
     display: flex;
+    /* flex: none; */
 }
 
-.index-welcome-image-content-text1 > p {
+.index-welcome-image-content-text1 > div {
     color: var(--secondary-color-gray-10, #F8F8F8);
     /* Text Shadow */
     text-shadow: 0px 0px 30px #ABC;
@@ -153,7 +152,7 @@ body > p {
     margin-bottom: 25px;
 }
 
-.index-welcome-image-content-text2 > p {
+.index-welcome-image-content-text2 > div {
     color: var(--secondary-color-gray-10, #F8F8F8);
 
     /* Body - Bold 16(13.3) */
@@ -203,6 +202,8 @@ body > p {
     margin-top: -1px;
     border-width: 0px;
 }
+
+
 
 .index-main-frame {
     display: flex;
