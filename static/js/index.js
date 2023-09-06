@@ -101,32 +101,77 @@ let initSearchBtn = function () {
 
 }
 
+let generateMrtLi = function (mrt) {
+    const mrtLi = document.createElement('li');
+    mrtLi.classList.add('index-main-content-mrt-list-item');
+    const mrtLiTxt = document.createTextNode(mrt);
+    mrtLi.appendChild(mrtLiTxt);
+    let container = document.getElementById('allMrtList');
+    container.appendChild(mrtLi);
+}
 let handleMrtUrlResponse = async function (response) {
     if(response.status === 200){
         let result = await response.json();
         let data = result['data'];
-
-        // 建mrt清單
-        console.log(data);
+        for (let i = 0; i < data.length ; i++) {
+            // 建mrt清單
+            generateMrtLi(data[i]);
+        }
     }else{
         console.log(response.status);
      // Rest of status codes (400,500,303), can be handled here appropriately
     }
 }
 
-let generateMrtList = function () {
+let getMrtList = function () {
     fetch('/api/mrts')
     .then(handleMrtUrlResponse)
+    .then(() => initMrtListClick())
     .catch((err) => {
         console.log(err);
     });
 }
 
-generateMrtList();
+let initMrtListClick = function() {
+    const mrtList = document.getElementsByClassName("index-main-content-mrt-list-item");
+    for (let i = 0; i < mrtList.length ; i++) {
+        let mrtLi = mrtList[i];
+        mrtLi.addEventListener("click", function(event) {
+            const value = event.target.innerHTML;
+            document.getElementById("keyword").value = value;
+            document.getElementById("searchBtn").click();
+        });
+    }
+}
+
+let initMrtBtn = function() {
+    const container = document.querySelector('.index-main-content-mrt-list-container');
+    const scrollList = document.querySelector('.index-main-content-mrt-list ul');
+    const leftButton = document.getElementById('mrtLeftBtn');
+    const rightButton = document.getElementById('mrtRightBtn');
+
+    let scrollPosition = 0;
+
+    leftButton.addEventListener('click', () => {
+    scrollPosition -= 150 ; // 根据需要调整滚动的距离
+    if (scrollPosition < 0) {
+        scrollPosition = 0;
+    }
+    scrollList.style.transform = `translateX(${-scrollPosition}px)`;
+    });
+
+    rightButton.addEventListener('click', () => {
+        scrollPosition += 150; // 根据需要调整滚动的距离
+        const maxScroll = scrollList.scrollWidth - container.clientWidth;
+        if (scrollPosition > maxScroll) {
+            scrollPosition = maxScroll;
+        }
+        scrollList.style.transform = `translateX(${-scrollPosition}px)`;
+    });
+}
 
 
-
-
-
+getMrtList();
 initSearchBtn();
 document.getElementById("searchBtn").click();
+initMrtBtn();

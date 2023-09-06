@@ -12,10 +12,11 @@ body > p {
 .headerFrame {
     position: sticky;
     z-index: 100;
-    width: 100%;
+    /* width: 100%; */
     top: 0;    /* 固定在页面的顶部*/
     left: 0;
     display: flex;
+    flex: none;
     padding: 10px 0px 10px 0px;
     align-items: center;
     justify-content: center;
@@ -24,16 +25,22 @@ body > p {
 
 .header {
     display: flex;
+    /* flex: none; */
     width: 1200px;
+
+    @media (max-width:1200px) {
+        width: 100%;
+    }
 }
 
 .title {
-    display: flex;
-    flex: auto;
+    /* display: flex; */
+    flex: none;
     width: 150px;
     height: 34px;
-    align-items: center;
-    justify-content: flex-start;
+    text-align: center;
+    /* align-items: center; */
+    /* justify-content: flex-start; */
 
     color: var(--primary-color-cyan-70, #489);
     /* Header 2 - Bold 30(34) */
@@ -44,14 +51,13 @@ body > p {
 }
 
 .title-text {
-    display: flex;
+    /* display: flex; */
+    height: 34px;
     flex: none;
-    align-items: center;
-    justify-content: center;
 }
 .menu {
-    flex: auto;
     display: flex;
+    flex: auto;
     width: 175px;
     justify-content: flex-end;
     align-items: center;
@@ -59,42 +65,29 @@ body > p {
 
 .menu-item-reserve {
     flex: none;
-    display: flex;
+    display: block;
     height: 14px;
     width: 64px;
     padding: 10px;
-    justify-content: center;
-    align-items: center;
+    
 }
 
 .menu-item-reserve-text {
-    display: flex;
-    flex: none;
-    /* height: 14px;
-    width: 64px; */
     color: var(--secondary-color-gray-70, #666);
     /* Body - Med 16(13.3) */
     font-family: Noto Sans TC;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
 }
 
 .menu-item-login {
     flex: none;
-    display: flex;
-    /* width: 71px;
-    height: 14px; */
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
+    display: block;
 }
 
 .menu-item-login-text {
-    display: flex;
-    flex: none;
     width: 71px;
     height: 14px;
     color: var(--secondary-color-gray-70, #666);
@@ -103,8 +96,7 @@ body > p {
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
 }
 
 .index-welcome-frame {
@@ -121,9 +113,9 @@ body > p {
 .index-welcome-image-img {
     display: block;
     width: 100%;
-    height: 480px;
-    max-width: 100%;
-    max-height: 100%;
+    height: 320px;
+    /* max-width: 100%; */
+    /* max-height: 100%; */
     object-fit: cover;
     object-position: left top; /*可裁切*/
 }
@@ -223,8 +215,6 @@ body > p {
     border-width: 0px;
 }
 
-
-
 .index-main-frame {
     display: flex;
     width: auto;
@@ -239,29 +229,77 @@ body > p {
     justify-content: center;
 }
 
+.index-main-mrt {
+    display: flex;
+    flex: none;
+    width: 1200px;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgb(218, 246, 218);
+
+    @media (max-width:1200px) {
+        width: 100%;
+    }
+
+    @media (max-width:360px) {
+        width: 60%;
+    }
+}
+
 .index-main-content-mrt {
     display: flex;
+    flex: none;
     width: 100%;
     height: 50px;
     margin-top: 40px;
     padding-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.index-main-content-mrt-list-container {
+    display: flex;
+    flex: auto;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden; /* 隐藏容器的溢出内容 */
+    position: relative; /* 使内部元素可以相对定位 */
+}
+
+.index-main-content-mrt-list {
+    white-space: nowrap; 
+    padding: 13px;
+}
+
+.index-main-content-mrt-list > ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.index-main-content-mrt-list > ul > li{
+    padding: 15px;
 }
 
 .index-main-content-mrt-left {
     display: flex;
-    flex: auto;
+    flex: none;
     width: 32px;
     height: 32px;
     justify-content: flex-start;
-
+    padding: 15px 0px 15px 15px;
 }
 
 .index-main-content-mrt-right {
     display: flex;
-    flex: auto;
+    flex: none;
     width: 32px;
     height: 32px;
     justify-content: flex-end;
+    padding: 15px 15px 15px 0px;
+
 }
 
 .index-main-content-attraction-list {
@@ -273,8 +311,6 @@ body > p {
     @media (max-width:1920px) { 
         flex-wrap: wrap;
     }
-
-    
 }
 
 .index-main-content-attraction-item {
