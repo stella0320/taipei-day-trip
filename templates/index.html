@@ -6,6 +6,7 @@
         <link rel="stylesheet" type="text/css" href="/static/css/index.css?cache={{time}}"/>
     </head>
     <body>
+        <input type="hidden" id="nextPage" value="0"/>
         <div class="headerFrame">
             <div class="header">
                 <div class="title">台北一日遊</div>
@@ -23,10 +24,10 @@
                         <div class="index-welcome-image-content-text2"><div>探索每個角落，體驗城市的深度旅遊行程</div></div>
                         <div class="index-welcome-image-content-search">
                         <div class="index-welcome-image-content-search-text">
-                            <input type="text" placeholder="輸入景點名稱查詢" id="keyWord"/>
+                            <input type="text" placeholder="輸入景點名稱查詢" id="keyword"/>
                         </div>
                         <div class="index-welcome-image-content-search-btn">
-                            <button type="button"><img src="../static/image/search.png"></button>
+                            <button type="button" id="searchBtn"><img src="../static/image/search.png"></button>
                     </div>
                 </div>
             </div>
@@ -46,65 +47,13 @@
         </div>
         <div class="index-main-frame">
             <div class="index-main-content">
-                <div class="index-main-content-attraction-list">
-                    <div class="index-main-content-attraction-item">
-                        <div class="index-main-content-attraction-image">
-                            <img class="index-main-content-attraction-image-img" src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000987.jpg" />
-                            <div class="index-main-content-attraction-image-txt">
-                                <div>平安樓</div>
-                            </div>
-                        </div>
-                        <div class="index-main-content-attraction-text">
-                            <div class="index-main-content-attraction-text-mrt"><div>忠孝復興</div></div>
-                            <div class="index-main-content-attraction-text-category"><div>公共藝術</div></div>
-                        </div>
-                    </div>
-                    <div class="index-main-content-attraction-item">
-                        <div class="index-main-content-attraction-image">
-                            <img class="index-main-content-attraction-image-img" src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000987.jpg" />
-                            <div class="index-main-content-attraction-image-txt">
-                                <div>平安樓</div>
-                            </div>
-                        </div>
-                        <div class="index-main-content-attraction-text">
-                            <div class="index-main-content-attraction-text-mrt"><div>忠孝復興</div></div>
-                            <div class="index-main-content-attraction-text-category"><div>公共藝術</div></div>
-                        </div>
-                    </div>
-                    <div class="index-main-content-attraction-item">
-                        <div class="index-main-content-attraction-image">
-                            <img class="index-main-content-attraction-image-img" src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000987.jpg" />
-                            <div class="index-main-content-attraction-image-txt">
-                                <div>平安樓</div>
-                            </div>
-                        </div>
-                        <div class="index-main-content-attraction-text">
-                            <div class="index-main-content-attraction-text-mrt"><div>忠孝復興</div></div>
-                            <div class="index-main-content-attraction-text-category"><div>公共藝術</div></div>
-                        </div>
-                    </div>
-                    <div class="index-main-content-attraction-item">
-                        <div class="index-main-content-attraction-image">
-                            <img class="index-main-content-attraction-image-img" src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000987.jpg" />
-                            <div class="index-main-content-attraction-image-txt">
-                                <div>平安樓</div>
-                            </div>
-                        </div>
-                        <div class="index-main-content-attraction-text">
-                            <div class="index-main-content-attraction-text-mrt"><div>忠孝復興</div></div>
-                            <div class="index-main-content-attraction-text-category"><div>公共藝術</div></div>
-                        </div>
-                    </div>
-                    
-
-                </div>
+                <div class="index-main-content-attraction-list" id="attractionList"></div>
             </div>
-            
         </div>
         <div class="index-foot-frame">
             <div class="index-foot-text"><div class="index-foot-text-txt">COPYRIGHT © 2021 台北一日遊</div></div>
         </div>
 
     </body>
-
+    <script src="/static/js/index.js?cache={{time}}"></script>
 </html>

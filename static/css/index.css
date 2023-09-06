@@ -207,7 +207,6 @@ body > p {
 
 .index-main-frame {
     display: flex;
-    /* height: 806px; */
     width: auto;
     background-color: rgb(223, 223, 247);
     justify-content: center;
@@ -246,34 +245,33 @@ body > p {
 }
 
 .index-main-content-attraction-list {
-    width: 1200px;
+    max-width: 1200px;
+    min-height: 806px;
     display: flex;
     justify-content: space-between;
-
+    align-items: flex-start;
     @media (max-width:1920px) { 
         flex-wrap: wrap;
     }
-
-    @media (max-width:1200px) { 
-        width: 90%;
-    }
-
-    @media (max-width:360px) { 
-        width: 100%;
-    }
-
 }
 
 .index-main-content-attraction-item {
-    flex: auto;
+    flex: none;
     width: 270px;
+    height: 242px;
     margin: 15px;
     border-radius: 5px;
     border: 1px solid var(--secondary-color-gray-20, #E8E8E8);
     /* 邊寬會造成item往外擴張 */
     box-sizing: border-box;
     background: var(--White, #FFF);
-    
+    @media (max-width:360px) { 
+        width: 90%;
+    }
+
+    /* @media (max-width:360px) { 
+        width: 100%;
+    } */
 }
 
 .index-main-content-attraction-image {
@@ -296,7 +294,7 @@ body > p {
     width: calc(100% - 20px);
     height: 20px;
     background-color: black;
-    opacity: 0.5;
+    opacity: 0.6;
     position: absolute; /* 将文本绝对定位在容器内 */
     top: 100%; /* 从顶部距离容器的中心50% */
     left: 50%; /* 从左侧距离容器的中心50% */
