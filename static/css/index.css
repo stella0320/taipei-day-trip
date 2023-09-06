@@ -1,8 +1,7 @@
 
 body {
-    font-size: 20px;
-    margin-left:0px;
-    margin-right:0px;
+    /* font-size: 20px; */
+    margin:0px;
 }
 
 body > p {
@@ -11,9 +10,16 @@ body > p {
 }
 
 .headerFrame {
+    position: sticky;
+    z-index: 100;
+    width: 100%;
+    top: 0;    /* 固定在页面的顶部*/
+    left: 0;
     display: flex;
-    justify-content: center;
+    padding: 10px 0px 10px 0px;
     align-items: center;
+    justify-content: center;
+    background-color: white;
 }
 
 .header {
@@ -22,9 +28,12 @@ body > p {
 }
 
 .title {
-    flex: none;
+    display: flex;
+    flex: auto;
     width: 150px;
     height: 34px;
+    align-items: center;
+    justify-content: flex-start;
 
     color: var(--primary-color-cyan-70, #489);
     /* Header 2 - Bold 30(34) */
@@ -32,9 +41,14 @@ body > p {
     font-size: 30px;
     font-style: normal;
     font-weight: 700;
-    line-height: 34px; /* 113.333% */
 }
 
+.title-text {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+}
 .menu {
     flex: auto;
     display: flex;
@@ -54,28 +68,33 @@ body > p {
 }
 
 .menu-item-reserve-text {
-    height: 14px;
-    width: 64px;
+    display: flex;
+    flex: none;
+    /* height: 14px;
+    width: 64px; */
     color: var(--secondary-color-gray-70, #666);
     /* Body - Med 16(13.3) */
     font-family: Noto Sans TC;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 13.3px; /* 83.125% */
+    justify-content: center;
+    align-items: center;
 }
 
 .menu-item-login {
     flex: none;
     display: flex;
-    width: 71px;
-    height: 14px;
+    /* width: 71px;
+    height: 14px; */
     padding: 10px;
     justify-content: center;
     align-items: center;
 }
 
 .menu-item-login-text {
+    display: flex;
+    flex: none;
     width: 71px;
     height: 14px;
     color: var(--secondary-color-gray-70, #666);
@@ -84,7 +103,8 @@ body > p {
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 13.3px; /* 83.125% */
+    justify-content: center;
+    align-items: center;
 }
 
 .index-welcome-frame {
@@ -110,6 +130,7 @@ body > p {
 
 .index-welcome-image-content {
     display: flex;
+    flex: none;
     flex-direction: column;
     width: 1180px;
     height: 20px;
@@ -118,6 +139,8 @@ body > p {
     left: 50%; /* 从左侧距离容器的中心50% */
     transform: translate(-50%, -50%); /* 将文本向左上角移动 /*将文本向左上角移动50%以使其居中*/
     padding: 10px;
+    justify-content: center;
+    /* align-items: center; */
 
     @media (max-width:1200px) {
         width: calc(100% - 20px);
@@ -141,7 +164,6 @@ body > p {
     font-size: 28px;
     font-style: normal;
     font-weight: 700;
-    line-height: 24px; /* 85.714% */
 }
 
 .index-welcome-image-content-text2 {
@@ -160,7 +182,6 @@ body > p {
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
-    line-height: 13.3px; /* 83.125% */
 }
 
 .index-welcome-image-content-search {
@@ -182,7 +203,6 @@ body > p {
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
-    line-height: 13.3px; /* 83.125% */
     padding: 15px;
     border-radius: 5px 0px 0px 5px;
     border-width: 0px;
@@ -248,11 +268,13 @@ body > p {
     max-width: 1200px;
     min-height: 806px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
     @media (max-width:1920px) { 
         flex-wrap: wrap;
     }
+
+    
 }
 
 .index-main-content-attraction-item {
@@ -272,6 +294,7 @@ body > p {
     /* @media (max-width:360px) { 
         width: 100%;
     } */
+    
 }
 
 .index-main-content-attraction-image {
@@ -311,7 +334,6 @@ body > p {
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
-    line-height: 13.3px; /* 83.125% */
 }
 
 .index-main-content-attraction-text {
@@ -335,7 +357,6 @@ body > p {
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 13.3px; /* 83.125% */
 }
 .index-main-content-attraction-text-category {
     flex: auto;
@@ -352,7 +373,6 @@ body > p {
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 13.3px; /* 83.125% */
 }
 
 
@@ -383,7 +403,6 @@ body > p {
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
-    line-height: 13.3px;
 }
 
 

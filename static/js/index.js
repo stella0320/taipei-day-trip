@@ -1,5 +1,3 @@
-console.log('test')
-
 
 let appendAttrationCard = function(data) {
 
@@ -58,23 +56,25 @@ let appendAttrationCard = function(data) {
 
 let appendAttrationPage = function(data) {
     for (let i = 0; i < data.length; i++) {
-        console.log(data[i]['name']);
         appendAttrationCard(data[i]);
     } 
 }
 
-let handleUrlResponse = async function (response) {
+let handleAttractionUrlResponse = async function (response) {
     
     if(response.status === 200){
         let result = await response.json();
         let data = result['data'];
         if (data && data.length > 0) {
+            document.getElementById('attractionList').innerHTML = "";
             appendAttrationPage(data);
+             // 置換nextPage
+            let nextPage = document.getElementById('nextPage');
+            nextPage.value = result['nextPage'];
+        } else {
+            document.getElementById('attractionList').innerHTML = "No Result.";
         }
-
-        // 置換nextPage
-        let nextPage = document.getElementById('nextPage');
-        nextPage.value = result['nextPage'];
+       
     }else{
         console.log(response.status);
      // Rest of status codes (400,500,303), can be handled here appropriately
@@ -85,7 +85,7 @@ let handleUrlResponse = async function (response) {
 
 let generateAttractions = function(page, keyword) {
     fetch('/api/attractions?page='+ page +'&keyword=' + encodeURIComponent(keyword))
-    .then(handleUrlResponse)
+    .then(handleAttractionUrlResponse)
     .catch((err) => {
         console.log(err);
     });
@@ -95,11 +95,38 @@ let generateAttractions = function(page, keyword) {
 let initSearchBtn = function () {
     document.getElementById("searchBtn").addEventListener("click", function() {
         let keyword = document.getElementById("keyword").value;
-        document.getElementById('attractionList').innerHTML = "";
         console.log('keyword:'+keyword);
         generateAttractions(0, keyword);
     });
 
 }
 
+let handleMrtUrlResponse = async function (response) {
+    if(response.status === 200){
+        let result = await response.json();
+        let data = result['data'];
+
+        // 建mrt清單
+        console.log(data);
+    }else{
+        console.log(response.status);
+     // Rest of status codes (400,500,303), can be handled here appropriately
+    }
+}
+
+let generateMrtList = function () {
+    fetch('/api/mrts')
+    .then(handleMrtUrlResponse)
+    .catch((err) => {
+        console.log(err);
+    });
+}
+
+generateMrtList();
+
+
+
+
+
 initSearchBtn();
+document.getElementById("searchBtn").click();
