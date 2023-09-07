@@ -66,7 +66,6 @@ let handleAttractionUrlResponse = async function (response) {
         let result = await response.json();
         let data = result['data'];
         if (data && data.length > 0) {
-            document.getElementById('attractionList').innerHTML = "";
             appendAttrationPage(data);
              // 置換nextPage
             let nextPage = document.getElementById('nextPage');
@@ -84,6 +83,9 @@ let handleAttractionUrlResponse = async function (response) {
 
 
 let generateAttractions = function(page, keyword) {
+    if (!(page + '')) {
+        return;
+    }
     fetch('/api/attractions?page='+ page +'&keyword=' + encodeURIComponent(keyword))
     .then(handleAttractionUrlResponse)
     .catch((err) => {
@@ -94,8 +96,8 @@ let generateAttractions = function(page, keyword) {
 
 let initSearchBtn = function () {
     document.getElementById("searchBtn").addEventListener("click", function() {
+        document.getElementById('attractionList').innerHTML = "";
         let keyword = document.getElementById("keyword").value;
-        console.log('keyword:'+keyword);
         generateAttractions(0, keyword);
     });
 
@@ -170,6 +172,23 @@ let initMrtBtn = function() {
     });
 }
 
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        console.log('foot in');
+        let keyword = document.getElementById("keyword").value;
+        let nextPage = document.getElementById("nextPage").value;
+        generateAttractions(nextPage, keyword);
+
+      } else {
+        // 目標元素離開 viewport 時執行
+        console.log('foot out');
+      }
+    });
+})
+
+const footBox = document.getElementById('indexFoot');
+observer.observe(footBox);
 
 getMrtList();
 initSearchBtn();
