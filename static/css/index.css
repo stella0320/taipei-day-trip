@@ -318,10 +318,14 @@ body {
 
 .index-main-content-attraction-list {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: flex-start;
+    align-items: center;
     @media (max-width:1920px) { 
         flex-wrap: wrap;
+    }
+
+    @media (max-width:1200px) { 
+        justify-content: center;
     }
 }
 
