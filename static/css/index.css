@@ -244,6 +244,7 @@ body {
     /* background-color: rgb(218, 246, 218); */
 
     @media (max-width:1200px) {
+        /* 螢幕小於1200px時，寬度占螢幕100%，也就是隨螢幕大小變化 */
         width: 100%;
     }
 
