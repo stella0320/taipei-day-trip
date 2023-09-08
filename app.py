@@ -58,6 +58,6 @@ def attractionsApi():
 		return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 500
 	return result
 
-app.run(host='0.0.0.0', port='3000')
+# app.run(host='0.0.0.0', port='3000')
 
-# app.run(port='3000')
+app.run(port='3000')

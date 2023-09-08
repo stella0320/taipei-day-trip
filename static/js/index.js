@@ -81,11 +81,16 @@ let handleAttractionUrlResponse = async function (response) {
 
 }
 
-
+let pageList = [];
 let generateAttractions = function(page, keyword) {
     if (!(page + '')) {
         return;
     }
+
+    if (pageList.indexOf(page) > -1) {
+        return;
+    }
+    pageList.push(page);
     fetch('/api/attractions?page='+ page +'&keyword=' + encodeURIComponent(keyword))
     .then(handleAttractionUrlResponse)
     .catch((err) => {
@@ -98,6 +103,8 @@ let initSearchBtn = function () {
     document.getElementById("searchBtn").addEventListener("click", function() {
         document.getElementById('attractionList').innerHTML = "";
         let keyword = document.getElementById("keyword").value;
+        
+        pageList.push(0);
         generateAttractions(0, keyword);
     });
 
@@ -141,6 +148,7 @@ let initMrtListClick = function() {
         mrtLi.addEventListener("click", function(event) {
             const value = event.target.innerHTML;
             document.getElementById("keyword").value = value;
+            pageList = [];
             document.getElementById("searchBtn").click();
         });
     }
