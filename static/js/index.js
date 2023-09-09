@@ -81,13 +81,12 @@ let handleAttractionUrlResponse = async function (response) {
 
 }
 
-let pageList = [0];
-let generateAttractions = function(page, keyword) {
-
+let pageList = [];
+let generateAttractions = async function(page, keyword) {
     if (!(page + '')) {
         return;
     }
-    
+
     if (pageList.indexOf(page) > -1) {
         return;
     }
@@ -103,8 +102,11 @@ let generateAttractions = function(page, keyword) {
 
 let initSearchBtn = function () {
     document.getElementById("searchBtn").addEventListener("click", function() {
+        console.log('search')
         document.getElementById('attractionList').innerHTML = "";
         let keyword = document.getElementById("keyword").value;
+        document.getElementById("nextPage").value = 1;
+        pageList = [];
         generateAttractions(0, keyword);
     });
 
@@ -149,7 +151,6 @@ let initMrtListClick = function() {
             const value = event.target.innerHTML;
             document.getElementById("keyword").value = value;
             pageList = [];
-            
             document.getElementById("searchBtn").click();
         });
     }
@@ -185,10 +186,11 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         console.log('foot in');
-        let keyword = document.getElementById("keyword").value;
-        let nextPage = document.getElementById("nextPage").value;
-        generateAttractions(nextPage, keyword);
-
+        if (document.getElementById('attractionList').innerHTML) {
+            let nextPage = document.getElementById("nextPage").value;
+            let keyword = document.getElementById("keyword").value;
+            generateAttractions(nextPage, keyword);
+        }
       } else {
         // 目標元素離開 viewport 時執行
         console.log('foot out');
@@ -196,10 +198,32 @@ const observer = new IntersectionObserver((entries) => {
     });
 })
 
-const footBox = document.getElementById('indexFoot');
-observer.observe(footBox);
+
+let clickSearchBtn = function() {
+    return new Promise((resolve, reject) => {
+        setTimeout(function() {
+            initSearchBtn();
+            
+            resolve();
+        }, 300);
+    });
+}
+
+let observeFootBox = function() {
+    
+}
 
 getMrtList();
+initMrtBtn();
 initSearchBtn();
 document.getElementById("searchBtn").click();
-initMrtBtn();
+const footBox = document.getElementById('indexFoot');
+observer.observe(footBox);
+// 先點完search，再觸發觀察是否已經滑到底部
+// clickSearchBtn().then(observeFootBox);
+
+
+
+
+
+
