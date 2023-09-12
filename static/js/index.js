@@ -1,9 +1,9 @@
 
 let appendAttrationCard = function(data) {
-
     const item = document.createElement('div');
     item.classList.add('index-main-content-attraction-item');
-
+    item.setAttribute('data-id', data['id'])
+    initAttractionClick(item);
     const itemImage = document.createElement('div');
     itemImage.classList.add('index-main-content-attraction-image');
 
@@ -199,18 +199,12 @@ const observer = new IntersectionObserver((entries) => {
 })
 
 
-let clickSearchBtn = function() {
-    return new Promise((resolve, reject) => {
-        setTimeout(function() {
-            initSearchBtn();
-            
-            resolve();
-        }, 300);
+let initAttractionClick = function($element) {
+    $element.addEventListener('click', function(event) {
+        const attractionItem = this;
+        const attractionId = this.getAttribute('data-id');
+        window.location = '/attraction/' + attractionId;
     });
-}
-
-let observeFootBox = function() {
-    
 }
 
 getMrtList();
@@ -219,8 +213,6 @@ initSearchBtn();
 document.getElementById("searchBtn").click();
 const footBox = document.getElementById('indexFoot');
 observer.observe(footBox);
-// 先點完search，再觸發觀察是否已經滑到底部
-// clickSearchBtn().then(observeFootBox);
 
 
 
