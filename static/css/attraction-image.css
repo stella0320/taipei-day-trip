@@ -69,6 +69,8 @@
 
 .image-radio > input{
     accent-color: black;
+    width: 12px;
+    height: 12px;
 }
 
 .image-btn {
