@@ -19,7 +19,7 @@ def index():
 @app.route("/attraction/<id>", methods = ['GET'])
 def attraction(id):	
 	print('id' + id);
-	return render_template("attraction.html", time=str(time.time()))
+	return render_template("attraction.html", time=str(time.time()), id = id)
 
 @app.route("/booking")
 def booking():
