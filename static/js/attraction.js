@@ -29,12 +29,12 @@ let handleAttractionById = async function(response) {
             fillUpAttrationInfo(result['data']);
             generateImage(result['data']['images'])
         } else {
-            // window.location = '/';
+            window.location = '/';
             console.log('data not find');
         }
     }else{
         console.log(response.status);
-        // window.location = '/';
+        window.location = '/';
      // Rest of status codes (400,500,303), can be handled here appropriately
     }
 }

@@ -14,7 +14,7 @@ body {
     justify-content: center;
     background-color: white;
     box-sizing: border-box; 
-    border-bottom: 0.5px #666666 solid;
+    border-bottom: 1px var(--Gray-300, #E8E8E8) solid;
     padding: 10px 0px 10px 10px;
 }
 .header {
