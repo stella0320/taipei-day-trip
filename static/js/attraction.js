@@ -1,5 +1,5 @@
 let fillUpAttrationInfo = function(data) {
-    console.log(data);
+    console.log('info')
     const attractionName = document.getElementById('attractionName');
     const attractionNameText = document.createTextNode(data['name']);
     attractionName.appendChild(attractionNameText);
@@ -27,6 +27,7 @@ let handleAttractionById = async function(response) {
         let result = await response.json();
         if (result) {
             fillUpAttrationInfo(result['data']);
+            generateImage(result['data']['images'])
         } else {
             window.location = '/';
         }

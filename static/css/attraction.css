@@ -20,7 +20,6 @@
 
 .content {
     display: flex;
-    /* background-color: red; */
     justify-content: center;
 }
 
@@ -28,6 +27,7 @@
     display: flex;
     width: 1200px; 
     flex-direction: column;
+
 }
 
 hr {
@@ -40,9 +40,8 @@ hr {
     display: flex;
     flex: auto;
     width: cal(100%-30px);
-    height: 100%; /* 要刪*/
-    padding: 0px 15px 0px 15px;
-    background-color: rgb(247, 247, 217);
+    padding: 40px 15px 0px 15px;
+    /* background-color: rgb(247, 247, 217); */
     justify-content: space-between;
 
     @media (max-width:750px) {
@@ -53,24 +52,12 @@ hr {
 
 }
 
-.main-content-section-image {
-    display: flex;
-    float: none;
-    width: 540px;
-    height: 400px;
-    background-color: rgb(222, 252, 252);
-
-    @media (max-width:1200px) {
-        width: 100%;
-    }
-}
-
 .main-content-section-info {
     display: flex;
     float: none;
     width: 600px;
     height: 400px;
-    background-color: rgb(218, 253, 241);
+    /* background-color: rgb(218, 253, 241); */
     flex-direction: column;
     justify-content: space-between;
     
@@ -187,7 +174,7 @@ hr {
     flex: none;
     width: calc(100%-20px);
     min-height: 362px; 
-    background-color: rgb(198, 198, 241);
+    /* background-color: rgb(198, 198, 241); */
     flex-direction: column;
     padding: 10px;
 }
