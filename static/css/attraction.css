@@ -20,6 +20,7 @@
 
 .content {
     display: flex;
+    visibility: hidden; /* 隱藏占空間，display:hidden 隱藏不占空間*/
     justify-content: center;
 }
 
