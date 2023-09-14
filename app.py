@@ -15,8 +15,10 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 @app.route("/")
 def index():
 	return render_template("index.html", time=str(time.time()))
+
 @app.route("/attraction/<id>", methods = ['GET'])
 def attraction(id):	
+	print('id' + id);
 	return render_template("attraction.html", time=str(time.time()))
 
 @app.route("/booking")
