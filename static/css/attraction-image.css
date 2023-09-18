@@ -35,10 +35,7 @@
 .main-content-section-image-image-img-txt {
     display: flex;
     flex: none;
-    /* width: calc(100% - 20px); */
     width: calc(100% - 20px);
-    /* background-color: black; */
-    /* opacity: 0.6; */
     position: absolute; /* 将文本绝对定位在容器内 */
     color: white;
     transform: translate(-100%, -100%); /*将文本向左上角移动50%以使其居中*/

@@ -11,15 +11,7 @@
     </head>
     <body>
         <input type="hidden" id="attractionId" value={{id}} />
-        <div class="headerFrame">
-            <div class="header">
-                <div class="title" id="title">台北一日遊</div>
-                <div class="menu">
-                    <div class="menu-item-reserve">預定行程</div>
-                    <div class="menu-item-login">登入/註冊</div>
-                </div>
-            </div>
-        </div>
+        {% include "header.html" %}
         <div class="content" id="content">
             <div class="main-content">
                 <div class="main-content-section">
@@ -90,9 +82,7 @@
                 </div>
             </div>
         </div>
-        <div class="index-foot-frame" id="indexFoot">
-            <div class="index-foot-text">COPYRIGHT © 2021 台北一日遊</div>
-        </div>  
+        {% include "footer.html" %}
 
     </body>
     <script src="/static/js/basic.js?cache={{time}}"></script>

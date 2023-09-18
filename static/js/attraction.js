@@ -48,6 +48,7 @@ let queryAttrationById = function () {
     .then(handleAttractionById)
     .then(function() {
         // 資料載入後，show基本頁面
+        console.log('visible');
         document.getElementById('content').style.visibility = "visible";
     })
     .catch((err) => {
