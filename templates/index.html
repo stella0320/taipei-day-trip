@@ -4,13 +4,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8" />
         <title>台北一日遊</title>
-        <link rel="stylesheet" type="text/css" href="/static/css/basic.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/loginModal.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
         <link rel="stylesheet" type="text/css" href="/static/css/index.css?cache={{time}}"/>
+        
     </head>
     
     <body>
         <input type="hidden" id="nextPage" value="0"/>
-        {% include "header.html" %}    
+        {% include "loginModal.html" %} 
+        {% include "header.html" %}
         <div id="indexContent">
             <div class="index-welcome-frame">
                 <div class="index-welcome-image">
@@ -69,8 +72,11 @@
             </div>
         </div>
         {% include "footer.html" %}
+   
     </body>
-    <script src="/static/js/basic.js?cache={{time}}"></script>
+    <script src="/static/js/loginModal.js?cache={{time}}"></script>
+    <script src="/static/js/header.js?cache={{time}}"></script>
     <script src="/static/js/index.js?cache={{time}}"></script>
+    
     
 </html>

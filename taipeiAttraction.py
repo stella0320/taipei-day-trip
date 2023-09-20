@@ -19,11 +19,15 @@ class TaipeiAttraction(object):
     def __close__(self):
         self.__connect.close()
 
+
+    def __commit__(self):
+        self.__connect.commit()
+
     def insertNewUser(self, userName, email, password):
         insertSql = "Insert into taipei_attraction.users (user_name, user_email, user_password) values (%s, %s, %s)"
         self.__open__()
         self.__cursor.execute(insertSql, (userName, email, password, ))
-        self.__connect.commit()
+        self.__commit__()
         self.__close__()
 
     def queryUserByEmail(self, email):
@@ -31,6 +35,18 @@ class TaipeiAttraction(object):
         sql += " where user_email = %s"
         self.__open__()
         self.__cursor.execute(sql, (email, ))
+        result = self.__cursor.fetchone()
+        self.__close__()
+        if result and len(result) > 0:
+            return dict(zip(self.__cursor.column_names, result))
+        
+        return None
+    
+    def queryUserByEmailAndPassword(self, email, password):
+        sql = "select * from taipei_attraction.users"
+        sql += " where user_email = %s and user_password = %s"
+        self.__open__()
+        self.__cursor.execute(sql, (email, password, ))
         result = self.__cursor.fetchone()
         self.__close__()
         if result and len(result) > 0:

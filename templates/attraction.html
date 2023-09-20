@@ -5,12 +5,14 @@
         <meta charset="utf-8" />
         <title>台北一日遊</title>
         <link rel="stylesheet" type="text/css" href="/static/css/attraction-image.css?cache={{time}}"/>
-        <link rel="stylesheet" type="text/css" href="/static/css/basic.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/loginModal.css?cache={{time}}"/>
         <link rel="stylesheet" type="text/css" href="/static/css/attraction.css?cache={{time}}"/>
         
     </head>
     <body>
         <input type="hidden" id="attractionId" value={{id}} />
+        {% include "loginModal.html" %}
         {% include "header.html" %}
         <div class="content" id="content">
             <div class="main-content">
@@ -85,7 +87,8 @@
         {% include "footer.html" %}
 
     </body>
-    <script src="/static/js/basic.js?cache={{time}}"></script>
+    <script src="/static/js/header.js?cache={{time}}"></script>
+    <script src="/static/js/loginModal.js?cache={{time}}"></script>
     <script src="/static/js/attraction-image.js?cache={{time}}"></script>
     <script src="/static/js/attraction.js?cache={{time}}"></script>
 
