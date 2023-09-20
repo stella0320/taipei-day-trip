@@ -1,0 +1,115 @@
+body {
+    margin:0px;
+}
+
+.headerFrame {
+    position: sticky;
+    z-index: 100;
+    top: 0;    /* 固定在页面的顶部*/
+    left: 0;
+    display: flex;
+    flex: none;
+    height: 54px;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    box-sizing: border-box; 
+    border-bottom: 1px var(--Gray-300, #E8E8E8) solid;
+    padding: 10px 0px 10px 10px;
+}
+.header {
+    display: flex;
+    width: 1200px;
+}
+
+.title {
+    display: flex;
+    flex: none;
+    width: 150px;
+    height: 34px;
+    text-align: center;
+    color: var(--primary-color-cyan-70, #489);
+    font-family: Noto Sans TC;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    align-items: center;
+}
+
+.menu {
+    flex: auto;
+    width: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu-item {
+    flex: none;
+    display: block;
+    width: 175px;
+    height: 34px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.menu-item-reserve {
+    flex: none;
+    display: flex;
+    height: 14px;
+    padding: 10px;
+    text-align: center;
+    color: var(--secondary-color-gray-70, #666);
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    text-align: center;
+    align-items: center;
+}
+
+.menu-item-login {
+    flex: none;
+    display: flex;
+    height: 14px;
+    padding: 10px;
+    color: var(--secondary-color-gray-70, #666);
+    /* Body - Med 16(13.3) */
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    text-align: center;
+    align-items: center;
+}
+
+.index-foot-frame {
+    display: flex;
+    flex: none;
+    height: 104px;
+    background: var(--Gray-700, #757575);
+    justify-content: center;
+    align-items: center;
+}
+
+.index-foot-text {
+    display: flex;
+    flex: none;
+    width: 234px;
+    height: 14px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    align-items: center;
+    white-space: nowrap;
+    color: var(--additional-color-white, #FFF);
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.menu-item-reserve:hover, .menu-item-login:hover {
+    background-color: #E8E8E8;
+    cursor: pointer;
+}

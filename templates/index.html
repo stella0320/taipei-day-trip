@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8" />
+        <title>台北一日遊</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/loginModal.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/index.css?cache={{time}}"/>
+        
+    </head>
+    
+    <body>
+        <input type="hidden" id="nextPage" value="0"/>
+        {% include "loginModal.html" %} 
+        {% include "header.html" %}
+        <div id="indexContent">
+            <div class="index-welcome-frame">
+                <div class="index-welcome-image">
+                    <img class="index-welcome-image-img" src="../static/image/welcome.png"/>
+                    <div class="index-welcome-image-content">
+                        <div class="index-welcome-image-content-text1">輕鬆享受台北一日悠閒</div>
+                            <div class="index-welcome-image-content-text2">探索每個角落，體驗城市的深度旅遊行程</div>
+                            <div class="index-welcome-image-content-search">
+                            <div class="index-welcome-image-content-search-text">
+                                <input type="text" placeholder="輸入景點名稱查詢" id="keyword"/>
+                            </div>
+                            <div class="index-welcome-image-content-search-btn">
+                                <button type="button" id="searchBtn"><img src="../static/image/search.png"></button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="index-main">
+                <div class="index-mrt-frame">
+                    <div class="index-main-mrt">
+                        <div class="index-main-content-mrt">
+                            <div class="index-main-content-mrt-left">
+                                <img src="../static/image/arrow left.png" id="mrtLeftBtn" />
+                            </div>
+                            <div class="index-main-content-mrt-list-container">
+                            <div class="index-main-content-mrt-list">
+                                <ul id="allMrtList"></ul>
+                            </div>
+                            </div>
+                            <div class="index-main-content-mrt-right">
+                                <img src="../static/image/arrow right.png" id="mrtRightBtn" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="index-main-frame">
+                    <div class="index-main-content">
+                        <div class="index-main-content-attraction-list" id="attractionList">
+                            <!-- <div class="index-main-content-attraction-item">
+                                <div class="index-main-content-attraction-image">
+                                    <img class="index-main-content-attraction-image-img" src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000987.jpg" />
+                                    <div class="index-main-content-attraction-image-txt">
+                                        <div>平安樓</div>
+                                    </div>
+                                </div>
+                                <div class="index-main-content-attraction-text">
+                                    <div class="index-main-content-attraction-text-mrt"><div>忠孝復興</div></div>
+                                    <div class="index-main-content-attraction-text-category"><div>公共藝術</div></div>
+                                </div>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "footer.html" %}
+   
+    </body>
+    <script src="/static/js/loginModal.js?cache={{time}}"></script>
+    <script src="/static/js/header.js?cache={{time}}"></script>
+    <script src="/static/js/index.js?cache={{time}}"></script>
+    
+    
+</html>

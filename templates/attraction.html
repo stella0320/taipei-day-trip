@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8" />
+        <title>台北一日遊</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/attraction-image.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/loginModal.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/attraction.css?cache={{time}}"/>
+        
+    </head>
+    <body>
+        <input type="hidden" id="attractionId" value={{id}} />
+        {% include "loginModal.html" %}
+        {% include "header.html" %}
+        <div class="content" id="content">
+            <div class="main-content">
+                <div class="main-content-section">
+                    <div class="main-content-section-image">
+                        <div class="main-content-section-image-image" id="imageContainer">
+                            <!-- <img class="main-content-section-image-image-img" src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg" /> -->
+                            <!-- <img class="main-content-section-image-image-img" src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11002891.jpg" /> -->
+                            <div class="main-content-section-image-image-img-txt image-btn">
+                                <div class="main-content-section-image-image-left">
+                                    <img src="../static/image/arrow left.png" id="attractionLeftBtn" onclick="plusImage(-1)"/>
+                                </div>
+                                <div class="main-content-section-image-image-right" >
+                                    <img src="../static/image/arrow right.png" id="attractionRightBtn" onclick="plusImage(1)" />
+                                </div>        
+                            </div>
+                            <div class="main-content-section-image-image-img-txt image-radio-group">
+                                <div class="image-radio" id="imageRadioContainer">
+                                    <!-- <input type="radio" name="" class="">
+                                    <input type="radio" name="" class="image-radio-item">
+                                    <input type="radio" name=""> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-content-section-info">
+                        <div class="main-content-section-info-name text-style" id="attractionName"></div>
+                        <div class="main-content-section-info-category-mrt text-style" id="attractionMrtAndCategory"></div>
+                        <div class="main-content-section-info-booking-form">
+                            <div class="main-content-section-info-booking-text">
+                                <div class="text-style" style="height: 22px;font-weight: 700;font-size: 16px;line-height:22px;margin-bottom: 15px;">訂購導覽行程</div>
+                                <div class="text-style" style="min-height: 24px;font-weight: 500;font-size: 16px;line-height:24px;margin-bottom: 15px;" >以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                                <div class="text-style" style="height: 35px;font-weight: 700;line-height:35px;margin-bottom: 15px;">選擇日期：<input type="date" class="trip-date" name=""  /></div>
+                                <div class="text-style main-content-section-info-booking-text-time">
+                                    <div class="main-content-section-info-booking-text-time-title">選擇時間：</div>
+                                    <div class="main-content-section-info-booking-text-time-choice">
+                                        <div class="main-content-section-info-booking-text-time-radio">
+                                            <input type="radio" class="time-radio" name="tripTime" id="timeMorning" value="timeMorning" checked>                                   
+                                            <label for="timeMorning" class="">上半天</label>
+                                        </div>
+                                        <div class="main-content-section-info-booking-text-time-radio">
+                                            <input type="radio" class="time-radio" name="tripTime" id="timeEvening" value="timeEvening">
+                                            <label for="timeEvening">下半天</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-style main-content-section-info-booking-text-fee">
+                                    <div class="main-content-section-info-booking-text-fee-title">導覽費用：</div>
+                                    <div class="main-content-section-info-booking-text-fee-text" id="tripFee">新台幣2000元</div>
+                                </div>
+                                <!-- <div class=""> -->
+                                    <div class="text-style main-content-section-info-booking-button">開始預訂行程</div>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-style main-content-profile">
+                    <div class="main-content-profile-discription" id="attractionDiscription"></div>
+                    <div class="main-content-profile-location">
+                        <div class="main-content-profile-title">景點地址:</div>
+                        <div class="main-content-profile-content" id="attractionLocation"></div>
+                    </div>
+                    <div class="main-content-profile-transportation">
+                        <div class="main-content-profile-title">交通方式:</div>
+                        <div class="main-content-profile-content" id="attractionTransportation"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "footer.html" %}
+
+    </body>
+    <script src="/static/js/header.js?cache={{time}}"></script>
+    <script src="/static/js/loginModal.js?cache={{time}}"></script>
+    <script src="/static/js/attraction-image.js?cache={{time}}"></script>
+    <script src="/static/js/attraction.js?cache={{time}}"></script>
+
+</html>
