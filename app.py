@@ -12,7 +12,7 @@ app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
-password = "root"
+password = "jessie0320"
 jwt_algorithms = "HS256"
 jwt_key = "secrect_key"
 
