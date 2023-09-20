@@ -51,11 +51,6 @@ let userAuthorithation = function() {
                 console.log('500');
             }
         });
-    
-    } else {
-        // 顯示login modal
-        headerLoginBtn = document.getElementById('headerLoginBtn').click();
-        console.log('modal');
     }
 }
 
