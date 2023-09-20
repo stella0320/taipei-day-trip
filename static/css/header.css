@@ -108,3 +108,8 @@ body {
     font-style: normal;
     font-weight: 700;
 }
+
+.menu-item-reserve:hover, .menu-item-login:hover {
+    background-color: #E8E8E8;
+    cursor: pointer;
+}
