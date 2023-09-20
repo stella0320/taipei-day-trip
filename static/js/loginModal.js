@@ -5,6 +5,9 @@ let loginModeLinkEvent = function() {
     const loginName = document.getElementById('loginNameDiv');
     const loginModeLink = document.getElementById('loginModeLink');
     const loginBtnTxt = loginBtn.getAttribute('value');
+    const loginErrorMassge = document.getElementById('loginErrorMassge');
+    loginErrorMassge.innerText = '';
+    loginErrorMassge.style.color = 'red';
     if (loginBtnTxt == "loginAccount") {
         // 切換成註冊模式
         loginTitle.innerText = '註冊會員帳號';

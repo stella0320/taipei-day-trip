@@ -77,18 +77,22 @@ def registrateNewUser():
 		name = data['name']
 		mail = data['mail']
 		userPassword = data['password']
-		print(len(name));
 		
 		if not name:
 			return jsonify(error=True, message="註冊失敗，需要填寫姓名"), 400
-		elif (len(name) > 100):
-			return  jsonify(error=True, message="註冊失敗，姓名長度不能超過100個字"), 400
+		elif (len(name) > 50):
+			return  jsonify(error=True, message="註冊失敗，姓名長度不能超過50個字"), 400
+		
 		if not mail:
 			return jsonify(error=True, message="註冊失敗，需要填寫信箱"), 400
+		elif (len(mail) > 50):
+			return jsonify(error=True, message="註冊失敗，信箱長度不能超過50個字"), 400
 		
 		if not userPassword:
 			return jsonify(error=True, message="註冊失敗，需要填寫密碼"), 400
-
+		elif (len(userPassword) > 30):
+			return jsonify(error=True, message="註冊失敗，密碼長度不能超過30個字"), 400
+		
 		db_connect = TaipeiAttraction('localhost', 'root', password)
 		user = db_connect.queryUserByEmail(mail)
 		if not user:

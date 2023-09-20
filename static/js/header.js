@@ -36,7 +36,6 @@ let userAuthorithation = function() {
             if (res.status == '400') {
                 console.log('重複註冊');
             } else if (res.status == '200') {
-                console.log('200');
                 const response = await res.json();
                 const user = response['data'];
                 if (user) {
