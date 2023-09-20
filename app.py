@@ -119,7 +119,7 @@ def userAuth():
 	user = db_connect.queryUserByEmailAndPassword(mail, password)
 
 	if not user:
-		return jsonify(error=True, message="登入失敗，信箱或密碼錯誤或其他原因"), 400
+		return jsonify(error=True, message="登入失敗，信箱或密碼錯誤"), 400
 	
 	# 產生新的token
 	data = {
