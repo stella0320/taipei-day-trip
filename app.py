@@ -6,15 +6,35 @@ from flask import render_template
 from flask import request
 from taipeiAttraction import TaipeiAttraction
 import time
+from datetime import datetime
 import jwt
+import logging
+import traceback
+today = datetime.now().strftime("%Y-%m-%d")
+
+
+logging.basicConfig(filename='./log/record-'+ today + '.log', level=logging.DEBUG, encoding='utf-8', format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+# for console setting
+console = logging.StreamHandler()
+console.setLevel(logging.DEBUG)
+
+# 設定輸出格式
+formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+# handler 設定輸出格式
+console.setFormatter(formatter)
+# 加入 hander 到 root logger
+logging.getLogger('').addHandler(console)
+
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
-password = "jessie0320"
+password = "root"
 jwt_algorithms = "HS256"
 jwt_key = "secrect_key"
+
 
 # Pages
 @app.route("/")
@@ -27,7 +47,7 @@ def attraction(id):
 
 @app.route("/booking")
 def booking():
-	return render_template("booking.html")
+	return render_template("booking.html", time=str(time.time()))
 
 @app.route("/test")
 def test():
@@ -43,6 +63,7 @@ def mrts():
 		db_connect = TaipeiAttraction('localhost', 'root', password)
 		result = db_connect.findAllMrt()
 	except Exception as e:
+		app.logger.debug(str(e), exc_info=True)
 		return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 500
 	return result
 
@@ -55,6 +76,7 @@ def attractionApiById(attractionId):
 		if not result:
 			return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 400
 	except Exception as e:
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 500
 	
 	return result
@@ -67,6 +89,7 @@ def attractionsApi():
 		db_connect = TaipeiAttraction('localhost', 'root', password)
 		result = db_connect.queryAttractionApi(page, keyword)
 	except Exception as e:
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 500
 	return result
 
@@ -77,7 +100,6 @@ def registrateNewUser():
 		name = data['name']
 		mail = data['mail']
 		userPassword = data['password']
-		
 		if not name:
 			return jsonify(error=True, message="註冊失敗，需要填寫姓名"), 400
 		elif (len(name) > 50):
@@ -97,11 +119,10 @@ def registrateNewUser():
 		user = db_connect.queryUserByEmail(mail)
 		if not user:
 			db_connect.insertNewUser(name, mail, userPassword)
-			# user = db_connect.queryUserByEmail(mail)
 		else:
 			return jsonify(error=True, message="註冊失敗，Email已經註冊帳戶"), 400
 	except Exception as e:
-		print('Exception:' + str(e))
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message=str(e)), 500
 	return "註冊成功，請登入系統";
 
@@ -136,6 +157,7 @@ def userAuth():
 		encoded = jwt.encode(data, jwt_key, algorithm=jwt_algorithms)
 		return {"token" : encoded}
 	except Exception as e:
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message=str(e)), 500
 	
 
@@ -156,7 +178,7 @@ def userAuthWithToken():
 		if dataByToken and dataByToken['email']:
 			db_connect = TaipeiAttraction('localhost', 'root', password)
 			user = db_connect.queryUserByEmail(dataByToken['email'])
-		
+			app.logger.info('Login User Name:%s', user['user_name'])
 		if user:
 			return {
 				'data' : {
@@ -167,7 +189,7 @@ def userAuthWithToken():
 			}
 		return None
 	except Exception as e:
-		print(e)
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message=str(e)), 500
 
 app.run(host='0.0.0.0', port='3000')

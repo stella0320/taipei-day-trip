@@ -46,6 +46,14 @@ let userAuthorithation = function() {
                     const headerLoginBtn = document.getElementById('headerLoginBtn');
                     headerLoginBtn.innerText = user['name'] + '/登出系統';
                     headerLoginBtn.setAttribute('value', 'logout');
+
+                    const name = document.getElementById('name');
+                    name.setAttribute('value', user['name']);
+                    
+                     // TODO 要修改
+                    if (!!initBookingIntroduction) {
+                        initBookingIntroduction(user['name']);
+                    }
                 }
             } else {
                 console.log('500');
