@@ -6,7 +6,26 @@ from flask import render_template
 from flask import request
 from taipeiAttraction import TaipeiAttraction
 import time
+from datetime import datetime
 import jwt
+import logging
+import traceback
+today = datetime.now().strftime("%Y-%m-%d")
+
+
+logging.basicConfig(filename='./log/record-'+ today + '.log', level=logging.DEBUG, encoding='utf-8', format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+# for console setting
+console = logging.StreamHandler()
+console.setLevel(logging.DEBUG)
+
+# 設定輸出格式
+formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+# handler 設定輸出格式
+console.setFormatter(formatter)
+# 加入 hander 到 root logger
+logging.getLogger('').addHandler(console)
+
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
@@ -16,6 +35,7 @@ password = "jessie0320"
 jwt_algorithms = "HS256"
 jwt_key = "secrect_key"
 
+
 # Pages
 @app.route("/")
 def index():
@@ -23,12 +43,12 @@ def index():
 
 @app.route("/attraction/<id>", methods = ['GET'])
 def attraction(id):
+
 	return render_template("attraction.html", time=str(time.time()), id = id)
 
 @app.route("/booking")
 def booking():
-	return render_template("booking.html")
-
+	return render_template("booking.html", time=str(time.time()))
 @app.route("/test")
 def test():
 	return render_template("test.html")
@@ -43,6 +63,7 @@ def mrts():
 		db_connect = TaipeiAttraction('localhost', 'root', password)
 		result = db_connect.findAllMrt()
 	except Exception as e:
+		app.logger.debug(str(e), exc_info=True)
 		return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 500
 	return result
 
@@ -55,6 +76,7 @@ def attractionApiById(attractionId):
 		if not result:
 			return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 400
 	except Exception as e:
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 500
 	
 	return result
@@ -67,6 +89,7 @@ def attractionsApi():
 		db_connect = TaipeiAttraction('localhost', 'root', password)
 		result = db_connect.queryAttractionApi(page, keyword)
 	except Exception as e:
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message="請按照情境提供對應的錯誤訊息"), 500
 	return result
 
@@ -77,7 +100,6 @@ def registrateNewUser():
 		name = data['name']
 		mail = data['mail']
 		userPassword = data['password']
-		
 		if not name:
 			return jsonify(error=True, message="註冊失敗，需要填寫姓名"), 400
 		elif (len(name) > 50):
@@ -97,11 +119,10 @@ def registrateNewUser():
 		user = db_connect.queryUserByEmail(mail)
 		if not user:
 			db_connect.insertNewUser(name, mail, userPassword)
-			# user = db_connect.queryUserByEmail(mail)
 		else:
 			return jsonify(error=True, message="註冊失敗，Email已經註冊帳戶"), 400
 	except Exception as e:
-		print('Exception:' + str(e))
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message=str(e)), 500
 	return "註冊成功，請登入系統";
 
@@ -136,6 +157,7 @@ def userAuth():
 		encoded = jwt.encode(data, jwt_key, algorithm=jwt_algorithms)
 		return {"token" : encoded}
 	except Exception as e:
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message=str(e)), 500
 	
 
@@ -147,7 +169,7 @@ def userAuthWithToken():
 		if authorization_token:
 			authorization_token_parts = authorization_token.split(' ')
 			if len(authorization_token_parts) == 2 and authorization_token_parts[0] == 'Bearer':
-				token = authorization_token_parts[1]
+				token = authorization_token_parts[1].strip()
 		dataByToken = None
 		if token:
 			dataByToken = jwt.decode(token, jwt_key, algorithms=jwt_algorithms)
@@ -156,7 +178,7 @@ def userAuthWithToken():
 		if dataByToken and dataByToken['email']:
 			db_connect = TaipeiAttraction('localhost', 'root', password)
 			user = db_connect.queryUserByEmail(dataByToken['email'])
-		
+			app.logger.info('Login User Name:%s', user['user_name'])
 		if user:
 			return {
 				'data' : {
@@ -167,8 +189,84 @@ def userAuthWithToken():
 			}
 		return None
 	except Exception as e:
-		print(e)
+		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message=str(e)), 500
+
+
+@app.route('/api/booking', methods = ['GET'])
+def queryBookingList():
+	userAuth = userAuthWithToken()
+	user = None
+	if userAuth:
+		user = userAuth['data']
+	
+	if not user:
+		return jsonify(error=True, message='未登入系統，拒絕存取'), 403
+	
+	db_connect = TaipeiAttraction('localhost', 'root', password)
+	tripList = db_connect.findBookingTripByUserId(user['id'])
+
+	tripWithAttrationList = []
+	if tripList:
+		for trip in tripList:
+			attrationId = trip['attraction_id']
+		
+			db_connect = TaipeiAttraction('localhost', 'root', password)
+			attractionInfo = db_connect.queryAttractionId(attrationId)
+			if attractionInfo:
+				attractionInfo = attractionInfo['data']
+		
+
+			tripWithAttration = {
+				"tripId": trip['trip_id'],
+				"attraction":attractionInfo,
+				"date": trip['trip_date'],
+				"time": trip['trip_period'],
+				"price": trip['trip_fee']
+			}
+
+			tripWithAttrationList.append(tripWithAttration)
+	
+	return {"data": tripWithAttrationList}
+
+@app.route('/api/booking', methods = ['POST'])
+def bookingNewTrip():
+	try:
+		userAuth = userAuthWithToken()
+
+		if not userAuth:
+			return jsonify(error=True, message='未登入系統，拒絕存取'), 403
+
+		user = userAuth['data']
+		form = request.get_json()
+		attractionId = form['id']
+		tripDate = form['tripDate']
+		tripPeriod = form['tripPeriod']
+		if not attractionId or not tripDate or not tripPeriod:
+			return jsonify(error=True, message='建立失敗，輸入不正確或其他原因'), 400
+
+		db_connect = TaipeiAttraction('localhost', 'root', password)
+		db_connect.inserNewBookingTrip(attractionId, user['id'], tripDate, tripPeriod)
+
+	except Exception as e:
+		app.logger.error(str(e), exc_info=True)
+		return jsonify(error=True, message=str(e)), 500
+	
+	return jsonify(ok=True), 200
+
+@app.route('/api/booking/<tripId>', methods = ['DELETE'])
+def deleteTrip(tripId):
+	
+	userAuth = userAuthWithToken()
+
+	if not userAuth:
+		return jsonify(error=True, message='未登入系統，拒絕存取'), 403
+
+	
+	if tripId:
+		db_connect = TaipeiAttraction('localhost', 'root', password)
+		db_connect.deleteBookingTripByTripId(tripId);
+		return jsonify(ok=True), 200
 
 app.run(host='0.0.0.0', port='3000')
 
