@@ -92,6 +92,10 @@ let bookingTripBtnEvent = function() {
     const token = localStorage.getItem('token');
     const tripDate = document.getElementById('tripDate').value;
     const tripPeriod = document.querySelector('input[name=tripTime]:checked').value;
+    if (!token) {
+        // 沒登入過要跳登入畫面
+        loginModal.style.display = 'block';
+    }
     fetch('/api/booking', {
         method:"POST",
         body:JSON.stringify({
