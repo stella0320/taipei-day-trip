@@ -31,7 +31,7 @@ app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 
-password = "root"
+password = "jessie0320"
 jwt_algorithms = "HS256"
 jwt_key = "secrect_key"
 
@@ -43,12 +43,12 @@ def index():
 
 @app.route("/attraction/<id>", methods = ['GET'])
 def attraction(id):
+
 	return render_template("attraction.html", time=str(time.time()), id = id)
 
 @app.route("/booking")
 def booking():
 	return render_template("booking.html", time=str(time.time()))
-
 @app.route("/test")
 def test():
 	return render_template("test.html")
@@ -169,7 +169,7 @@ def userAuthWithToken():
 		if authorization_token:
 			authorization_token_parts = authorization_token.split(' ')
 			if len(authorization_token_parts) == 2 and authorization_token_parts[0] == 'Bearer':
-				token = authorization_token_parts[1]
+				token = authorization_token_parts[1].strip()
 		dataByToken = None
 		if token:
 			dataByToken = jwt.decode(token, jwt_key, algorithms=jwt_algorithms)
@@ -191,6 +191,82 @@ def userAuthWithToken():
 	except Exception as e:
 		app.logger.error(str(e), exc_info=True)
 		return jsonify(error=True, message=str(e)), 500
+
+
+@app.route('/api/booking', methods = ['GET'])
+def queryBookingList():
+	userAuth = userAuthWithToken()
+	user = None
+	if userAuth:
+		user = userAuth['data']
+	
+	if not user:
+		return jsonify(error=True, message='未登入系統，拒絕存取'), 403
+	
+	db_connect = TaipeiAttraction('localhost', 'root', password)
+	tripList = db_connect.findBookingTripByUserId(user['id'])
+
+	tripWithAttrationList = []
+	if tripList:
+		for trip in tripList:
+			attrationId = trip['attraction_id']
+		
+			db_connect = TaipeiAttraction('localhost', 'root', password)
+			attractionInfo = db_connect.queryAttractionId(attrationId)
+			if attractionInfo:
+				attractionInfo = attractionInfo['data']
+		
+
+			tripWithAttration = {
+				"tripId": trip['trip_id'],
+				"attraction":attractionInfo,
+				"date": trip['trip_date'],
+				"time": trip['trip_period'],
+				"price": trip['trip_fee']
+			}
+
+			tripWithAttrationList.append(tripWithAttration)
+	
+	return {"data": tripWithAttrationList}
+
+@app.route('/api/booking', methods = ['POST'])
+def bookingNewTrip():
+	try:
+		userAuth = userAuthWithToken()
+
+		if not userAuth:
+			return jsonify(error=True, message='未登入系統，拒絕存取'), 403
+
+		user = userAuth['data']
+		form = request.get_json()
+		attractionId = form['id']
+		tripDate = form['tripDate']
+		tripPeriod = form['tripPeriod']
+		if not attractionId or not tripDate or not tripPeriod:
+			return jsonify(error=True, message='建立失敗，輸入不正確或其他原因'), 400
+
+		db_connect = TaipeiAttraction('localhost', 'root', password)
+		db_connect.inserNewBookingTrip(attractionId, user['id'], tripDate, tripPeriod)
+
+	except Exception as e:
+		app.logger.error(str(e), exc_info=True)
+		return jsonify(error=True, message=str(e)), 500
+	
+	return jsonify(ok=True), 200
+
+@app.route('/api/booking/<tripId>', methods = ['DELETE'])
+def deleteTrip(tripId):
+	
+	userAuth = userAuthWithToken()
+
+	if not userAuth:
+		return jsonify(error=True, message='未登入系統，拒絕存取'), 403
+
+	
+	if tripId:
+		db_connect = TaipeiAttraction('localhost', 'root', password)
+		db_connect.deleteBookingTripByTripId(tripId);
+		return jsonify(ok=True), 200
 
 app.run(host='0.0.0.0', port='3000')
 

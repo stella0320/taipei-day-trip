@@ -23,6 +23,7 @@ let initLoginBtn = function() {
     });
 }
 
+
 let userAuthorithation = function() {
     const token = localStorage.getItem('token');
     if (token) {
@@ -49,10 +50,13 @@ let userAuthorithation = function() {
 
                     const name = document.getElementById('name');
                     name.setAttribute('value', user['name']);
-                    
-                     // TODO 要修改
-                    if (!!initBookingIntroduction) {
-                        initBookingIntroduction(user['name']);
+
+                     
+                    const bookingTitle = document.getElementById('bookingTitle');
+                    // booking.html
+                    if (bookingTitle) {
+                        const introText = document.createTextNode('您好，' + user['name'] + '，待預訂的行程如下');
+                        bookingTitle.appendChild(introText);
                     }
                 }
             } else {
@@ -60,8 +64,22 @@ let userAuthorithation = function() {
             }
         });
     }
+    return token;
+}
+
+let initPreserveListBtn = function() {
+    document.getElementById('preserveListBtn').addEventListener('click', function() {
+        const token = userAuthorithation();
+        if (!token) {
+            loginModal.style.display = 'block';
+        } else {
+            // booking
+            window.location = '/booking';
+        }
+    });
 }
 
 initClickIndex();
 initLoginBtn();
+initPreserveListBtn();
 userAuthorithation();

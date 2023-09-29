@@ -11,10 +11,10 @@ class TaipeiAttraction(object):
         try:
             self.__connect = mysql.connector.connect(host = self.__host, user= self.__user, password= self.__password, pool_name = 'mypool', pool_size = 30)
             self.__cursor = self.__connect.cursor()
-        except mysql.connector.errors as e:
+        except mysql.connector.Error as e:
             # Todo 測試
-            for error_msg in e:
-                print("Error %s" % (e))
+            print("Error %s" % (e))
+                
 
     def __close__(self):
         self.__connect.close()
@@ -153,7 +153,7 @@ class TaipeiAttraction(object):
     def insertNewAttractionImage(self, attraction_id, url):
         sql = 'Insert into taipei_attraction.attraction_image (attraction_id, image_url) values (%s, %s)'
         self.__open__()
-        self.__cursor.execute(sql, (url, ))
+        self.__cursor.execute(sql, (attraction_id, url, ))
         self.__connect.commit()
         self.__close__()
 
@@ -276,9 +276,33 @@ class TaipeiAttraction(object):
         }
 
         return result
+    
+    def inserNewBookingTrip(self, attractionId, userId, tripDate, tripPeriod):
+
+        tripFee = 2000
+        if tripPeriod == 'afternoon':
+            tripFee = 2500
+        sql = 'Insert into taipei_attraction.booking_trip (trip_status, trip_date, attraction_id, user_id, trip_period, trip_fee) values (%s, %s, %s, %s, %s, %s)'
+        self.__open__()
+        self.__cursor.execute(sql, ('temp', tripDate, attractionId, userId, tripPeriod, tripFee, ))
+        self.__connect.commit()
+        self.__close__()
+
+
+    def findBookingTripByUserId(self, userId):
+        sql = "select * from taipei_attraction.booking_trip where user_id = %s and trip_status = 'TEMP'"
+        self.__open__()
+        self.__cursor.execute(sql, (userId, ))        
+        result = self.__cursor.fetchall()
+        self.__close__()
+        if result and len(result) > 0:
+            return [dict(zip(self.__cursor.column_names, row)) for row in result]
         
-        
-
-
-
-
+        return None
+    
+    def deleteBookingTripByTripId(self, tripId):
+        sql = 'delete from taipei_attraction.booking_trip where trip_id = %s'
+        self.__open__()
+        self.__cursor.execute(sql, (tripId, ))
+        self.__connect.commit()
+        self.__close__()

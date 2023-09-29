@@ -1,5 +1,6 @@
-body {
+body, html {
     margin:0px;
+
 }
 
 .headerFrame {
@@ -87,9 +88,12 @@ body {
     display: flex;
     flex: none;
     height: 104px;
+    width: 100%;
     background: var(--Gray-700, #757575);
     justify-content: center;
-    align-items: center;
+    padding-top: 40px;
+    /* flex-grow: 1; */
+    
 }
 
 .index-foot-text {
