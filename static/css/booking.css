@@ -173,11 +173,12 @@
 }
 
 .booking-content-item-input > input {
-    height: 38px;
-    width: 200px;
+    height: 18px;
+    width: 180px;
     border-radius: 5px;
     border: 1px solid var(--Gray-300, #E8E8E8);
     background: var(--White, #FFF);
+    padding: 10px;
 }
 
 .booking-sub-content-column {
