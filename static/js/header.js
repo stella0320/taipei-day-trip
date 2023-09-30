@@ -6,7 +6,7 @@ let initClickIndex = function() {
 
 let deleteUserToken = function() {
     localStorage.removeItem('token');
-    location.reload();
+    window.location = '/';
 }
 
 let initLoginBtn = function() {
@@ -74,7 +74,7 @@ let initPreserveListBtn = function() {
             loginModal.style.display = 'block';
         } else {
             // booking
-            window.location = '/booking';
+            window.location = '/';
         }
     });
 }

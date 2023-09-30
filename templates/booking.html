@@ -90,19 +90,19 @@
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">卡片號碼 :</div>
                             <div class="booking-content-item-input">
-                                <input type="password" placeholder="**** **** **** ****" maxlength="16" id="creditCard" class="font-text-style" />
+                                <input type="password" placeholder="**** **** **** ****" maxlength="16" pattern="[0-9]{4}[\s]{1}[0-9]{4}[\s]{1}[0-9]{4}[\s]{1}[0-9]{4}" id="creditCard" class="font-text-style" />
                             </div>
                         </div>
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">過期時間 :</div>
                             <div class="booking-content-item-input">
-                                <input type="text" class="font-text-style" placeholder="MM/YY" pattern="[0-9]{2}/[0-9]{2}" />
+                                <input type="text" class="font-text-style" placeholder="MM/YY" pattern="(0?[1‑9]|1[0‑2])\/[0-9]{2}" />
                             </div>
                         </div>
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">驗證密碼 :</div>
                             <div class="booking-content-item-input">
-                                <input type="password" class="font-text-style" placeholder="CCV" />
+                                <input type="password" class="font-text-style" placeholder="CCV" pattern="[0-9]{3}" />
                             </div>
                         </div>
                     </div>
