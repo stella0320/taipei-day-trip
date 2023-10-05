@@ -58,6 +58,8 @@ let userAuthorithation = function() {
                         const introText = document.createTextNode('您好，' + user['name'] + '，待預訂的行程如下');
                         bookingTitle.appendChild(introText);
                     }
+                } else {
+                    window.location = '/';
                 }
             } else {
                 console.log('500');
@@ -71,10 +73,11 @@ let initPreserveListBtn = function() {
     document.getElementById('preserveListBtn').addEventListener('click', function() {
         const token = userAuthorithation();
         if (!token) {
-            loginModal.style.display = 'block';
+            window.location = '/';
+            // loginModal.style.display = 'block';
         } else {
             // booking
-            window.location = '/';
+            window.location = '/booking';
         }
     });
 }
