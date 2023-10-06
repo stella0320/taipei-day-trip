@@ -5,7 +5,6 @@ from flask import Flask, jsonify
 from flask import render_template
 from flask import request
 from taipeiAttraction import TaipeiAttraction
-from tapPay import TapPay
 import time
 from datetime import datetime
 import jwt
@@ -36,11 +35,7 @@ password = "jessie0320"
 jwt_algorithms = "HS256"
 jwt_key = "secrect_key"
 
-tap_pay_url = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
-tap_pay_partner_key = 'partner_yvNAtvcEOFaJG9IimrMvG5FxsPFBbtmBKxta3SNRnm2yxgaTWJ0USEMG'
-tap_pay_merchant_id = 'jessie0320_NCCC'
-# db_connect = TaipeiAttraction('localhost', 'root', password)
-		
+
 # Pages
 @app.route("/")
 def index():
@@ -60,19 +55,7 @@ def test():
 
 @app.route("/thankyou")
 def thankyou():
-	orderNumber = request.args.get("number", "")
-	orderId = int(orderNumber[-3:])
-
-	if not orderId:
-		return render_template("index.html", time=str(time.time()))
-	
-	db_connect = TaipeiAttraction('localhost', 'root', password)
-	# queryOrderByUserIdAndOrderId
-	orders = db_connect.queryOrderByOrderId(orderId)
-	tappayResponseStatus = 200
-	if orders and len(orders) > 0:
-		tappayResponseStatus = orders[0]['tappay_response_status']
-	return render_template("thankyou.html", time=str(time.time()), orderNumber = orderNumber, tappayResponseStatus = tappayResponseStatus)
+	return render_template("thankyou.html")
 
 @app.route("/api/mrts", methods = ['GET'])
 def mrts():
@@ -239,8 +222,7 @@ def queryBookingList():
 				"attraction":attractionInfo,
 				"date": trip['trip_date'],
 				"time": trip['trip_period'],
-				"price": trip['trip_fee'],
-				"orderId":trip['order_id']
+				"price": trip['trip_fee']
 			}
 
 			tripWithAttrationList.append(tripWithAttration)
@@ -283,136 +265,9 @@ def deleteTrip(tripId):
 	
 	if tripId:
 		db_connect = TaipeiAttraction('localhost', 'root', password)
-		# 要驗證delete的景點屬不屬於這個登入者
 		db_connect.deleteBookingTripByTripId(tripId);
 		return jsonify(ok=True), 200
 
-
-@app.route('/api/orders', methods = ['POST'])
-def createNewOrders():
-	userAuth = userAuthWithToken()
-
-	if not userAuth:
-		return jsonify(error=True, message='未登入系統，拒絕存取'), 403
-	
-	try:
-		user = userAuth['data']
-		userId = user['id']
-		form = request.get_json()
-		prime = form['prime']
-		order = form['order']
-		orderId = form['orderId']
-		tripList = order['trip']
-		totalPrice = order['totalPrice']
-		contact = order['contact']
-		contactName = contact['name']
-		contactEmail = contact['email']
-		contactPhone = contact['phone']
-
-		tripIdList = [int(trip['attraction']['id']) for trip in tripList]
-
-		# 先檢查所有訂單是不是登入者的
-		checkBookingTripResult = checkBookingTripByTripIdAndUserId(tripIdList, user['id'])
-
-		if not checkBookingTripResult:
-			return jsonify(error=True, message='訂單建立失敗，輸入不正確或其他原因'), 400
-		
-		db_connect = TaipeiAttraction('localhost', 'root', password)
-
-		# 先查舊資料
-		tempOrder = db_connect.queryTempOrderByUserId(userId)
-		if not tempOrder:
-			# 暫存 order
-			db_connect2 = TaipeiAttraction('localhost', 'root', password)
-			db_connect2.insertNewOrder(prime, userId, totalPrice, contactName, contactEmail, contactPhone)
-			tempOrder = db_connect.queryTempOrderByUserId(userId)
-		
-		orderId = None
-		createDate = datetime.now()
-		if tempOrder and len(tempOrder) > 0:
-			orderId = tempOrder[0]['order_id']
-			createDate = tempOrder[0]['create_date']
-
-		# 更新booking_trip
-		updateOrderIdForBookingTrip(tempOrder, tripIdList, prime)
-		
-		# call tappay server
-		tap_pay = TapPay(url = tap_pay_url, partner_key = tap_pay_partner_key, merchant_id = tap_pay_merchant_id, logger = app.logger)
-		
-		
-		tap_pay_request_data = {
-			"prime": prime,
-			"details":"Order id:" + str(orderId),
-			"amount": totalPrice,
-			"cardholder": {
-				"phone_number": contactPhone,
-				"name": contactName,
-				"email": contactEmail
-			}
-		}
-		tap_pay_response = tap_pay.make_request(data=tap_pay_request_data)
-		tap_pay_response_status = tap_pay_response.status
-
-		
-		tap_pay_response_data = tap_pay.getJsonResponse()
-		orderNumber = None
-		if createDate:
-			createDateStr = createDate.strftime("%Y%m%d")
-			orderNumber = createDateStr + str(orderId).zfill(3)
-		
-		tap_pay_response_data['order_number'] = orderNumber
-		db_connect.updateOrdersForTapPayInfo(tapPayResponseStatus = tap_pay_response_status, tapPayResponseData = tap_pay_response_data, orderId = orderId)
-		
-		if tap_pay_response_status == 200:
-			db_connect3 = TaipeiAttraction('localhost', 'root', password)
-			db_connect3.updateStatusForBookingTrip(orderId = orderId, statusCode = 1)
-			# 更新刷卡狀態
-		else:
-			return jsonify(error=True, message="訂單建立失敗，輸入不正確或其他原因"), 400
-		
-		app.logger.info("tap_pay_response:%s", tap_pay_response_data)
-		# return tempOrder
-		# orderId
-		
-		return {"data": {
-			"number": orderNumber,
-			"payment" : {
-				"status":tap_pay_response_data['status'],
-				"message":tap_pay_response_data['msg']
-			}
-		}}
-	except Exception as e:
-		app.logger.error(str(e), exc_info=True)
-		return jsonify(error=True, message=str(e)), 500
-
-def updateOrderIdForBookingTrip(tempOrder, tripIdList, prime):
-	orderId = None
-	if tempOrder:
-		orderId = tempOrder[0]['order_id']
-		
-	if orderId:
-		orderId = int(orderId)
-		db_connect = TaipeiAttraction('localhost', 'root', password)
-		db_connect.updateOrderIdForBookingTrip(orderId, tripIdList)
-
-		db_connect2 = TaipeiAttraction('localhost', 'root', password)
-		db_connect2.updatePrimeByOrderId(prime, orderId)
-
-def checkBookingTripByTripIdAndUserId(tripIdList, userId):
-	check = True
-	for tripId in tripIdList:
-		if tripId:
-			db_connect = TaipeiAttraction('localhost', 'root', password)
-			tempTripRecord = db_connect.findBookingTripByTripIdAndUserId(tripId, userId)
-			if not tempTripRecord:
-				check = False
-		else:
-			check = False
-
-		if not check:
-			break
-
-	return check
 app.run(host='0.0.0.0', port='3000')
 
 # app.run(port='3000')

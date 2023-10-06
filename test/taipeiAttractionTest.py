@@ -16,6 +16,3 @@ print(data)
 data1 = db_connect.queryAttractionApi(2, '北')
 
 print(data1)
-
-data2 = db_connect.findBookingTripByTripIdAndUserId(21, 4)
-print(data2)
