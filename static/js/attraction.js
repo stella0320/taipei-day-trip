@@ -19,9 +19,6 @@ let fillUpAttrationInfo = function(data) {
     const attractionTransportation = document.getElementById('attractionTransportation');
     const attractionTransportationText = document.createTextNode(data['transport']);
     attractionTransportation.appendChild(attractionTransportationText);
-
-    const bookingTripBtn = document.getElementById('bookingTripBtn');
-    bookingTripBtn.setAttribute('value', data['id']);
     
 }
 
@@ -59,7 +56,11 @@ let queryAttrationById = function () {
     });
 }
 
-
+// 資料還沒載入時，先不顯示基本頁面
+document.getElementById('content').style.visibility = "hidden";
+// 載入景點訊息
+queryAttrationById();
+// 選擇時間change
 let iniTripTimeChange = function() {
     let tripTimeList = document.getElementsByName('tripTime');
     for (let i=0; i < tripTimeList.length;i++) {
@@ -67,9 +68,9 @@ let iniTripTimeChange = function() {
         item.addEventListener('click', function(event) {
             let tripTime = document.querySelector('input[name=tripTime]:checked').value;
             let tripFee = "";
-            if (tripTime == "morning") {
+            if (tripTime == "timeMorning") {
                 tripFee = "新台幣2000元";
-            } else if (tripTime == "afternoon") {
+            } else if (tripTime == "timeEvening") {
                 tripFee = "新台幣2500元";
             }
              
@@ -85,46 +86,4 @@ let iniTripTimeChange = function() {
    
 }
 
-
-
-let bookingTripBtnEvent = function() {
-    const id = document.getElementById('bookingTripBtn').getAttribute('value');
-    const token = localStorage.getItem('token');
-    const tripDate = document.getElementById('tripDate').value;
-    const tripPeriod = document.querySelector('input[name=tripTime]:checked').value;
-    if (!token) {
-        // 沒登入過要跳登入畫面
-        loginModal.style.display = 'block';
-    }
-    fetch('/api/booking', {
-        method:"POST",
-        body:JSON.stringify({
-            id: id,
-            tripDate : tripDate,
-            tripPeriod : tripPeriod
-        }),
-        headers: new Headers({
-            "Content-Type": "application/json",
-            "Authorization": 'Bearer ' + token
-        })
-    }).then((response) => {
-        if (response.status == '200') {
-            // 預定行程成功，導到booking頁面
-            window.location = '/booking';
-        } else {
-            console.log(response.status);
-        }
-    });
-}
-let initBookingTripBtn = function() {
-    document.getElementById('bookingTripBtn').addEventListener('click', bookingTripBtnEvent);
-}
-
-// 資料還沒載入時，先不顯示基本頁面
-document.getElementById('content').style.visibility = "hidden";
-// 載入景點訊息
-queryAttrationById();
-// 選擇時間change
 iniTripTimeChange();
-// 預定行程按鈕
-initBookingTripBtn();

@@ -11,10 +11,10 @@ class TaipeiAttraction(object):
         try:
             self.__connect = mysql.connector.connect(host = self.__host, user= self.__user, password= self.__password, pool_name = 'mypool', pool_size = 30)
             self.__cursor = self.__connect.cursor()
-        except mysql.connector.Error as e:
+        except mysql.connector.errors as e:
             # Todo 測試
-            print("Error %s" % (e))
-                
+            for error_msg in e:
+                print("Error %s" % (e))
 
     def __close__(self):
         self.__connect.close()
@@ -153,7 +153,7 @@ class TaipeiAttraction(object):
     def insertNewAttractionImage(self, attraction_id, url):
         sql = 'Insert into taipei_attraction.attraction_image (attraction_id, image_url) values (%s, %s)'
         self.__open__()
-        self.__cursor.execute(sql, (attraction_id, url, ))
+        self.__cursor.execute(sql, (url, ))
         self.__connect.commit()
         self.__close__()
 
@@ -276,130 +276,9 @@ class TaipeiAttraction(object):
         }
 
         return result
-    
-    def inserNewBookingTrip(self, attractionId, userId, tripDate, tripPeriod):
-
-        tripFee = 2000
-        if tripPeriod == 'afternoon':
-            tripFee = 2500
-        sql = 'Insert into taipei_attraction.booking_trip (trip_status, trip_date, attraction_id, user_id, trip_period, trip_fee) values (%s, %s, %s, %s, %s, %s)'
-        self.__open__()
-        self.__cursor.execute(sql, (0, tripDate, attractionId, userId, tripPeriod, tripFee, ))
-        self.__connect.commit()
-        self.__close__()
-
-
-    def findBookingTripByUserId(self, userId):
-        sql = "select * from taipei_attraction.booking_trip where user_id = %s and trip_status = 0"
-        self.__open__()
-        self.__cursor.execute(sql, (userId, ))        
-        result = self.__cursor.fetchall()
-        self.__close__()
-        if result and len(result) > 0:
-            return [dict(zip(self.__cursor.column_names, row)) for row in result]
         
-        return None
-    
-    def deleteBookingTripByTripId(self, tripId):
-        sql = 'delete from taipei_attraction.booking_trip where trip_id = %s'
-        self.__open__()
-        self.__cursor.execute(sql, (tripId, ))
-        self.__connect.commit()
-        self.__close__()
-
-    def findBookingTripByTripIdAndUserId(self, tripId, userId):
-        sql = "select * from taipei_attraction.booking_trip where trip_id = %s and user_id = %s and trip_status = 0"
-        self.__open__()
-        self.__cursor.execute(sql, (int(tripId), userId, ))   
-        result = self.__cursor.fetchall()
-        self.__close__()
-        if result and len(result) > 0:
-            return [dict(zip(self.__cursor.column_names, row)) for row in result]
         
-        return None
-    
-    def insertNewOrder(self, prime, userId, amount, contact_name, contact_email, contact_phone):
-        sql = "INSERT INTO taipei_attraction.orders (prime, amount, contact_name, contact_email, contact_phone, create_id) values"
-        sql += " (%s, %s, %s, %s, %s, %s)"
-        self.__open__()
-        self.__cursor.execute(sql, (prime, int(amount), contact_name, contact_email, contact_phone, userId, ))
-        self.__connect.commit()
-        print(self.__cursor.lastrowid)
-        self.__close__()
-
-    def queryTempOrderByUserId(self, userId):
-        sql = "select * from taipei_attraction.orders where create_id = %s and order_status = 0"
-        self.__open__()
-        self.__cursor.execute(sql, (userId, ))    
-        result = self.__cursor.fetchall()
-        self.__close__()
-        if result and len(result) > 0:
-            return [dict(zip(self.__cursor.column_names, row)) for row in result]
-        
-        return None
-    
-    def updateOrderIdForBookingTrip(self, orderId, bookingTripIdList):
-        
-        format_strings = ','.join(['%s'] * len(bookingTripIdList))
-        sql = "update taipei_attraction.booking_trip "
-        sql += " set order_id = %%s"
-        sql += " where trip_id in (%s)" 
-        orderId_tuple = (orderId, )
-        sql = sql % format_strings
-        self.__open__()
-        self.__cursor.execute(sql, orderId_tuple + tuple(bookingTripIdList))
-        self.__connect.commit()
-        self.__close__()
-
-    def updatePrimeByOrderId(self, prime, orderId):
-        sql = "update taipei_attraction.orders "
-        sql += " set prime = %s"
-        sql += " where order_id = %s"
-
-        self.__open__()
-        self.__cursor.execute(sql, (prime, int(orderId), ))
-        self.__connect.commit()
-        self.__close__()
-
-    def updateOrdersForTapPayInfo(self, tapPayResponseStatus, tapPayResponseData, orderId):
-        
-        responseStatus = tapPayResponseData['status']
-        orderNumber = tapPayResponseData['order_number']
-        sql = None
-        params = None
-        if tapPayResponseStatus != 200 or responseStatus != 0:
-            sql = "update taipei_attraction.orders "
-            sql += " set order_status=%s, tappay_response_status=%s, tappay_status_code=%s, order_number=%s"
-            sql += " where order_id=%s"
-            params = (0, tapPayResponseStatus, tapPayResponseData['status'], tapPayResponseData['order_number'], orderId, )
-        else:
-            sql = "update taipei_attraction.orders "
-            sql += " set order_status=%s, tappay_response_status=%s, tappay_status_code=%s, order_number=%s, rec_trade_id=%s, bank_transaction_id=%s"
-            sql += " where order_id=%s"
-            params = (1, tapPayResponseStatus, tapPayResponseData['status'], tapPayResponseData['order_number'], tapPayResponseData['rec_trade_id'], tapPayResponseData['bank_transaction_id'], orderId, )
-        self.__open__()
-        self.__cursor.execute(sql, params)
-        self.__connect.commit()
-        self.__close__()
 
 
-    def updateStatusForBookingTrip(self, orderId, statusCode):
-        
-        sql = "update taipei_attraction.booking_trip "
-        sql += " set trip_status = %s"
-        sql += " where order_id = %s" 
-        self.__open__()
-        self.__cursor.execute(sql, (statusCode, orderId, ))
-        self.__connect.commit()
-        self.__close__()
 
-    def queryOrderByOrderId(self, orderId):
-        sql = "select * from taipei_attraction.orders where order_id = %s"
-        self.__open__()
-        self.__cursor.execute(sql, (orderId, ))    
-        result = self.__cursor.fetchall()
-        self.__close__()
-        if result and len(result) > 0:
-            return [dict(zip(self.__cursor.column_names, row)) for row in result]
-        
-        return None
+

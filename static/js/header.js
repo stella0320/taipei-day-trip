@@ -6,7 +6,7 @@ let initClickIndex = function() {
 
 let deleteUserToken = function() {
     localStorage.removeItem('token');
-    window.location = '/';
+    location.reload();
 }
 
 let initLoginBtn = function() {
@@ -22,7 +22,6 @@ let initLoginBtn = function() {
         }
     });
 }
-
 
 let userAuthorithation = function() {
     const token = localStorage.getItem('token');
@@ -47,42 +46,14 @@ let userAuthorithation = function() {
                     const headerLoginBtn = document.getElementById('headerLoginBtn');
                     headerLoginBtn.innerText = user['name'] + '/登出系統';
                     headerLoginBtn.setAttribute('value', 'logout');
-
-                    const name = document.getElementById('name');
-                    name.setAttribute('value', user['name']);
-
-                     
-                    const bookingTitle = document.getElementById('bookingTitle');
-                    // booking.html
-                    if (bookingTitle) {
-                        const introText = document.createTextNode('您好，' + user['name'] + '，待預訂的行程如下');
-                        bookingTitle.appendChild(introText);
-                    }
-                } else {
-                    window.location = '/';
                 }
             } else {
                 console.log('500');
             }
         });
     }
-    return token;
-}
-
-let initPreserveListBtn = function() {
-    document.getElementById('preserveListBtn').addEventListener('click', function() {
-        const token = userAuthorithation();
-        if (!token) {
-            window.location = '/';
-            // loginModal.style.display = 'block';
-        } else {
-            // booking
-            window.location = '/booking';
-        }
-    });
 }
 
 initClickIndex();
 initLoginBtn();
-initPreserveListBtn();
 userAuthorithation();
