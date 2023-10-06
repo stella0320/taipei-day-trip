@@ -13,7 +13,7 @@ import logging
 import traceback
 today = datetime.now().strftime("%Y-%m-%d")
 
-
+ 
 logging.basicConfig(filename='./log/record-'+ today + '.log', level=logging.DEBUG, encoding='utf-8', format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 # for console setting
