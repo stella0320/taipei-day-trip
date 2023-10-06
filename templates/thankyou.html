@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8" />
+        <title>台北一日遊</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/loginModal.css?cache={{time}}"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/thankYou.css?cache={{time}}"/>
+    </head>
+    <body>
+        {% include "loginModal.html" %}
+        {% include "header.html" %}
+        <div class="thankyou-content font-text-style">
+            {% if tappayResponseStatus == '200' %}
+                <div>感謝您的訂購</div>
+                <div>訂購成功!!</div>
+            {% else %}
+                <div>付款出現問題，請重新操作!!</div>
+            {% endif %}
+
+            <div>您的訂單編號是:{{orderNumber}}</div>
+        </div>
+        {% include "footer.html" %}
+    </body>
+    <script src="/static/js/header.js?cache={{time}}"></script>
+    <script src="/static/js/loginModal.js?cache={{time}}"></script>
+</html>
