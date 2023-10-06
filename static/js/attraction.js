@@ -67,9 +67,9 @@ let iniTripTimeChange = function() {
         item.addEventListener('click', function(event) {
             let tripTime = document.querySelector('input[name=tripTime]:checked').value;
             let tripFee = "";
-            if (tripTime == "morning") {
+            if (tripTime == "timeMorning") {
                 tripFee = "新台幣2000元";
-            } else if (tripTime == "afternoon") {
+            } else if (tripTime == "timeEvening") {
                 tripFee = "新台幣2500元";
             }
              
