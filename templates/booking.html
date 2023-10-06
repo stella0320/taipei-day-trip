@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="/static/css/header.css?cache={{time}}"/>
         <link rel="stylesheet" type="text/css" href="/static/css/loginModal.css?cache={{time}}"/>
         <link rel="stylesheet" type="text/css" href="/static/css/booking.css?cache={{time}}"/>
+        <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
     </head>
     <body>
         {% include "loginModal.html" %}
@@ -59,25 +60,26 @@
                     
                 </div>
                 <hr class="booking-hr">
+                <form>
                 <div class="booking-main-content">
                     <div class="booking-sub-content booking-sub-content-column">
                         <div class="booking-title font-text-style">您的聯絡資訊</div>
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">聯絡姓名 :</div>
                             <div class="booking-content-item-input">
-                                <input type="text" class="font-text-style" />
+                                <input type="text" class="font-text-style" id="contactName" required />
                             </div>
                         </div>
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">連絡信箱 :</div>
                             <div class="booking-content-item-input">
-                                <input type="email" class="font-text-style" />
+                                <input type="email" class="font-text-style" id="contactEmail" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required />
                             </div>
                         </div>
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">手機號碼 :</div>
                             <div class="booking-content-item-input">
-                                <input type="number" class="font-text-style" />
+                                <input type="tel" class="font-text-style" id="contactPhone" pattern="[09]{2}[0-9]{8}" required />
                             </div>
                         </div>
                         <div class="booking-content-item font-text-style" style="font-weight: 700;">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
@@ -90,19 +92,19 @@
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">卡片號碼 :</div>
                             <div class="booking-content-item-input">
-                                <input type="password" placeholder="**** **** **** ****" maxlength="16" pattern="[0-9]{4}[\s]{1}[0-9]{4}[\s]{1}[0-9]{4}[\s]{1}[0-9]{4}" id="creditCard" class="font-text-style" />
+                                <div id="creditCard" class="font-text-style tpfield" required></div>
                             </div>
                         </div>
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">過期時間 :</div>
                             <div class="booking-content-item-input">
-                                <input type="text" class="font-text-style" placeholder="MM/YY" pattern="(0?[1‑9]|1[0‑2])\/[0-9]{2}" />
+                                <div class="font-text-style tpfield" id="expirationDate"></div>
                             </div>
                         </div>
                         <div class="booking-content-item">
                             <div class="booking-content-item-title font-text-style">驗證密碼 :</div>
                             <div class="booking-content-item-input">
-                                <input type="password" class="font-text-style" placeholder="CCV" pattern="[0-9]{3}" />
+                                <div class="font-text-style tpfield" id="ccv"></div>
                             </div>
                         </div>
                     </div>
@@ -113,9 +115,11 @@
                         <div class="booking-summary-price font-text-style" id="totalPrice"></div>
                     </div>
                     <div class="booking-summary-item">
-                        <div class="booking-summary-btn font-text-style">確認訂購並付款</div>
+                        <!-- <div class="booking-summary-btn font-text-style">確認訂購並付款</div> -->
+                        <button class="booking-summary-btn font-text-style" type="submit" id="bookingBtn">確認訂購並付款</button>
                     </div>
                 </div>
+            </form>
             </div>
         </div>
         {% include "footer.html" %}
@@ -123,5 +127,5 @@
     <script src="/static/js/booking.js?cache={{time}}"></script>
     <script src="/static/js/header.js?cache={{time}}"></script>
     <script src="/static/js/loginModal.js?cache={{time}}"></script>
-    
+    <script src="/static/js/booking-credict-card.js?cache={{time}}"></script>
 </html>
